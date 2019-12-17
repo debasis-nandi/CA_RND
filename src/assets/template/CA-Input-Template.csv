@@ -1,0 +1,2 @@
+Source,ISIN,Country,Identifier,Price Currency,ExDate,Event Type,Event Name,Event Currency,Event Amount,Offer Price,Terms Old Shares,Terms New Shares,Spun - off Stock,Spun - off Cash,Price (Ex date -1),FX(Ex date -1),Pay Date,Price (Pay Date -1),Fx(Pay Date-1),Franking%,for Income%,REIT
+BBG,AU000000IPL1,AU,IPL.AX,AUD,11/12/2018,Cash Dividend,Interim,AUD,0.045,,,,0,0,3.53,1,11/12/2018,,,0,0,0

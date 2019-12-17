@@ -1,0 +1,79 @@
+{
+    "table": {
+        "paginator": true,
+        "rows": 10,
+        "rowsPerPageOptions": [5,10,20],
+        "reorderableColumns": true,
+        "responsive": false,
+        "globalsearch": true,
+        "resizableColumns": false,
+        "scrollable": true,
+        "scrollHeight": "300px",
+        "first":0,
+        "selectionMode":"",
+        "globalFilterFields":["clientname","rolename","resourcename"]
+    },
+    "columns": [
+        {
+            "field": "roleid",
+            "header": "Role Id",
+            "sortable": true,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": true,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "roleid",
+            "header": "Role",
+            "sortable": true,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "link",
+            "valueField": "rolename",
+            "routerLink": "admin/resource"
+        },
+        {
+            "field": "clientname",
+            "header": "Client",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "resourcename",
+            "header": "Resource(s)",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width250",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "action",
+            "header": "Action",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width100",
+            "hidden": false,
+            "type": "action",
+            "valueField": "",
+            "routerLink": ""
+        }
+    ],
+    "rows": []
+}

@@ -1,0 +1,231 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">Add New User Preference</h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">Add New User Preference</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form [formGroup]="addPreferenceForm">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div class="catool_widget " id="form_section">
+                        <div class="col-md-12 col-sm-12 col-xs-12 marginT20 marginB10">
+                            <div class="col-md-3 col-sm-4 col-xs-12 paddingL0 ">
+                                <input type="text" class="form-control" placeholder="Enter new Preference name" formControlName="preferenceName">
+                                <div *ngIf="addPreferenceForm.get('preferenceName').errors && (addPreferenceForm.get('preferenceName').dirty || addPreferenceForm.get('preferenceName').touched)">
+                                    <div *ngIf="addPreferenceForm.get('preferenceName').hasError('required')">
+                                        <span class="error">Preference name is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <span class="pull-right size30 ">
+                                <a *ngIf="!isDisabled" href="javascript:void(0)" id="save" (click)="onSave()" class=" selected_success">
+                                    <i class="fa fa-floppy-o" data-toggle="tooltip" data-placement="left" title="Save" data-original-title="Save"></i>
+                                </a>
+                            </span> -->
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 marginB10 padding0 ">
+
+                            <p-accordion [multiple]="true" id="preferenceAcc">
+                                <div class="panel panel-default">
+                                    <p-accordionTab header="Processing Criteria" [selected]="true" id="processingCriteriaAppTab">
+                                        <table class="table text-nowrap table-bordered table-striped">
+                                            <tbody>
+                                                <tr formGroupName="calculationMethodology">
+                                                    <td class="light_blue_bg">
+                                                        <strong>Calculation Methodology</strong>
+                                                    </td>
+                                                    <td *ngFor="let cal of calculationMethodologyOption; let i = index" [attr.colspan]="cal.colspan">
+                                                        <label class="control control--checkbox">
+                                                            {{cal.label}}
+                                                            <input type="checkbox" [formControlName]="cal.name" (change)="onCalculationMethodologyChange($event, cal.name)">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr formGroupName="indexType">
+                                                    <td class="light_blue_bg">
+                                                        <strong>Index Type</strong>
+                                                    </td>
+                                                    <td *ngFor="let inType of indexTypeOption; let i = index" [attr.colspan]="inType.colspan">
+                                                        <label class="control control--checkbox">
+                                                            {{inType.label}}
+                                                            <input type="checkbox" [formControlName]="inType.name" (change)="onIndexTypeChange($event, inType.name)">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr formGroupName="payDate">
+                                                    <td class="light_blue_bg" style="width:20%">
+                                                        <strong>Pay Date</strong>
+                                                    </td>
+                                                    <td *ngFor="let pay of payDateOption; let i = index" [attr.colspan]="pay.colspan">
+                                                        <label class="control control--checkbox">
+                                                            {{pay.label}}
+                                                            <input type="checkbox" [formControlName]="pay.name" (change)="onPayDateChange($event, pay.name)">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr class="tax_custom">
+                                                    <td class="light_blue_bg">
+                                                        <strong>WithHolding Tax %</strong>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Custom
+                                                            <input type="radio" formControlName="withHoldingTax" value="custom" class="custom_value">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                        <span *ngIf="isCustom" class="Custom_values">
+                                                            <!-- <select class="form-control" formControlName="customValue" style="display:inline;width:50%;margin-left:5px;">
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let cus of customOption" [value]="cus.value">{{cus.label}}</option>
+                                                            </select> -->
+                                                            <p-dropdown id="searchDDL" [options]="customOption" formControlName="customValue" [filter]="true" filterBy="label"
+                                                                [style]="{'width':'60%', 'height':'40px', 'margin-left':'5px', 'border-bottom-color':'#d8d8d8'}" styleClass="marginT0">
+                                                            </p-dropdown>
+                                                            <div style="padding-left: 75px;" *ngIf="addPreferenceForm.get('customValue').errors && (addPreferenceForm.get('customValue').dirty || addPreferenceForm.get('customValue').touched)">
+                                                                <div *ngIf="addPreferenceForm.get('customValue').hasError('required')">
+                                                                    <span class="error">Tax rate schedule is required.</span>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Standard
+                                                            <input type="radio" formControlName="withHoldingTax" value="standard">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <!--<label class="control control--radio">
+                                                            Flat
+                                                            <input type="radio" formControlName="withHoldingTax" value="flat">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                        <span *ngIf="isFlat" class="Custom_values">
+                                                            <input type="text" pInputText pKeyFilter="num" formControlName="flatValue" class="form-control" id="flatValue">
+                                                            <div style="padding-left: 60px;" *ngIf="addPreferenceForm.get('flatValue').errors && (addPreferenceForm.get('flatValue').dirty || addPreferenceForm.get('flatValue').touched)">
+                                                                <div *ngIf="addPreferenceForm.get('flatValue').hasError('required')">
+                                                                    <span class="error">Flat is required.</span>
+                                                                </div>
+                                                            </div>
+                                                        </span>-->
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </p-accordionTab>
+                                </div>
+                                <div class="panel panel-default">
+                                    <p-accordionTab header="Output Option" [selected]="true" id="outputCriteriaAppTab">
+                                        <table class="table text-nowrap table-bordered table-striped ">
+                                            <tbody>
+                                                <!-- <tr>
+                                                    <td class="light_blue_bg" style="width:20%">
+                                                        <strong>Country</strong>
+                                                    </td>
+                                                    <td style="width:200px;">
+                                                        <select formControlName="country" class="form-control" style="width:180px;">
+                                                            <option value="">Select</option>
+                                                            <option *ngFor="let coun of countryOption" [value]="coun.value">{{coun.label}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td colspan="3"> </td>
+                                                </tr> -->
+                                                <tr>
+                                                    <td class="light_blue_bg" style="width:20%">
+                                                        <strong>Email Watchlist</strong>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Yes
+                                                            <input type="radio" formControlName="emailAlerts" value="true">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            No
+                                                            <input type="radio" formControlName="emailAlerts" value="false">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <input type="email" formControlName="email" class="form-control" placeholder="Enter email address" required>
+                                                        <div *ngIf="addPreferenceForm.get('email').errors && (addPreferenceForm.get('email').dirty || addPreferenceForm.get('email').touched)">
+                                                            <div *ngIf="addPreferenceForm.get('email').hasError('required')">
+                                                                <span class="error">Email id not registered. Watchlist not updated.</span>
+                                                            </div>
+                                                            <div *ngIf="addPreferenceForm.get('email').hasError('email')">
+                                                                <span class="error">Add a valid email address, or a list of email addresses separated by commas(,).</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr formGroupName="saveAs">
+                                                    <td class="light_blue_bg">
+                                                        <strong>Format</strong>
+                                                    </td>
+                                                    <td *ngFor="let save of saveAsOption; let i = index" [attr.colspan]="save.colspan">
+                                                        <!-- <label class="control control--checkbox">
+                                                            {{save.label}}
+                                                            <input type="checkbox" [formControlName]="save.name">
+                                                            <div class="control__indicator"></div>
+                                                        </label> -->
+                                                        <label class="control control--radio">
+                                                            {{save.label}}
+                                                            <input type="radio" [formControlName]="save.name" value="{{save.value}}" class="custom_value">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </p-accordionTab>
+                                </div>
+                            </p-accordion>
+
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12" id="check-grid">
+                            <table class="table text-nowrap table-bordered table-striped ">
+                                <tbody>
+                                    <tr >
+                                        <td colspan="5">
+                                            <button *ngIf="!isDisabled" type="button" class="btn btn-primary CA_Tool_Btn marginR20" (click)="onSave()">Submit</button>
+                                            <a routerLink="/preference" class="size16">Back</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="400">
+</p-confirmDialog>	

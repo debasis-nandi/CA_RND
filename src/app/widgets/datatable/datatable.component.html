@@ -1,0 +1,208 @@
+
+<p-table #myTable id="myTable" *ngIf="table"
+    [paginator]="table.paginator" 
+    [rows]="table.rows" 
+    [first]="table.first"
+    [selectionMode]="table.selectionMode"
+    [scrollable]="table.scrollable"
+    [scrollHeight]="table.scrollHeight"
+    [reorderableColumns]="table.reorderableColumns"
+    [rowsPerPageOptions]="table.rowsPerPageOptions"
+    [globalFilterFields]="table.globalFilterFields"
+    [responsive]="table.responsive"
+    [loading]="loading"
+    [columns]="columns" 
+    [value]="rows">
+    
+    <ng-template *ngIf="table.globalsearch" pTemplate="caption">
+        <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+            <div id="search" class="col-md-4 col-sm-4 col-xs-12 pull-left padding0">
+                <input type="text" pInputText size="50" class="pull-left" placeholder=" Search" (input)="myTable.filterGlobal($event.target.value, 'contains')">
+            </div>
+            <div id="buttons" class="col-md-8 col-sm-8 col-xs-12 pull-right padding0" style="text-align: right">
+                <a *ngIf="isAddButton" href="javascript:void(0)" (click)="onAddNew()" class="pull-right btn CA_Tool_Btn marginL10">
+                    <i class="fa fa-plus"></i> Add New</a>
+            </div>
+        </div>
+        <div *ngIf="isPreferenceFilter" id="filterSection" class="col-md-12 col-sm-12 col-xs-12 padding0 tax_filters_sec withholding_filters_pos">
+                
+            <div class="col-md-3 col-sm-3 col-xs-12 ">
+                <label>Preference Name</label>
+                <p-dropdown id="searchDDL" [options]="preferenceOption" [(ngModel)]="preferenceFilter.profileName" [filter]="true" filterBy="label" 
+                    [style]="{'width':'100%', 'height':'30px'}" styleClass="marginT0">
+                </p-dropdown>
+            </div>
+            
+            <div class="col-md-2 col-sm-3 col-xs-12 marginB5">
+                <label>Calculation Methodology</label>
+                <select class="form-control " [(ngModel)]="preferenceFilter.caltype">
+                    <option value="">Select</option>
+                    <option *ngFor="let cal of caltypeOption" [value]="cal.value">{{cal.label}}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-3 col-sm-3 col-xs-12 marginB5">
+                <label>Index Type</label>
+                <select class="form-control " [(ngModel)]="preferenceFilter.indextype">
+                    <option value="">Select</option>
+                    <option *ngFor="let index of indextypeOption" [value]="index.value">{{index.label}}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2 col-sm-3 col-xs-12 ">
+                <label>WHT Type</label>
+                <select class="form-control " [(ngModel)]="preferenceFilter.whttype">
+                    <option value="">Select</option>
+                    <option *ngFor="let wht of whttypeOption" [value]="wht.value">{{wht.label}}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-1 col-sm-3 col-xs-12 marginT25 paddingL10">
+                <button id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left" type="submit" (click)="onSearch()" >Apply Filter</button>
+            </div>
+            
+        </div>
+        <div *ngIf="isRequestFilter" id="filterSection" class="col-md-12 col-sm-12 col-xs-12 padding0 tax_filters_sec withholding_filters_pos">
+        
+            <div class="col-md-2 col-sm-3 col-xs-12 ">
+                <label>Preference</label>
+                <p-dropdown id="searchDDL" [options]="preferenceOption" [(ngModel)]="requestFilter.preference" [filter]="true" filterBy="label"
+                    [style]="{'width':'100%', 'height':'34px'}" styleClass="marginT0">
+                </p-dropdown>
+            </div>
+        
+            <div class="col-md-2 col-sm-3 col-xs-12 marginB5">
+                <label>File Name</label>
+                <input type="text" [(ngModel)]="requestFilter.filename" class="form-control">
+            </div>
+        
+            <div class="col-md-2 col-sm-3 col-xs-12 marginB5">
+                <label>Keywords</label>
+                <input type="text" [(ngModel)]="requestFilter.keywords" class="form-control">
+            </div>
+        
+            <div class="col-md-2 col-sm-3 col-xs-12 ">
+                <label>Processed Form</label>
+                <div class="pos_relative" id="Date_pick_ico">
+                    <my-date-picker [(ngModel)]="requestFilter.fromDate" class="" [options]="myFromDateFormat" (dateChanged)="onDateChanged($event)">
+                    </my-date-picker>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-sm-3 col-xs-12 ">
+                <label>Processed To</label>
+                <div class="pos_relative" id="Date_pick_ico">
+                    <my-date-picker [(ngModel)]="requestFilter.toDate" class="" [options]="myToDateFormat">
+                    </my-date-picker>
+                </div>
+            </div>
+        
+            <div class="col-md-1 col-sm-3 col-xs-12 marginT25 paddingL10">
+                <button id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left" type="submit" (click)="onSearch()">Apply Filter</button>
+            </div>
+        
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <ng-container *ngFor="let col of columns">
+                <th *ngIf="!col.hidden" [pSortableColumn]="col.sortable ? col.field : ''" [ngClass]="col.styleClass" pReorderableColumn>
+                    {{col.header | titlecase}}
+                    <p-sortIcon *ngIf="col.sortable" [field]="col.field"></p-sortIcon>
+                </th>
+            </ng-container>
+        </tr>
+    </ng-template>
+    
+    <ng-template pTemplate="body" let-rowData let-i="rowIndex" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <ng-container *ngFor="let col of columns">
+                <td *ngIf="!col.hidden" [ngClass]="col.styleClass">
+    
+                    <div *ngIf="col.type == 'text'">
+                        <span pTooltip="{{rowData[col.field]}}" tooltipPosition="bottom">{{rowData[col.field] || 'N/A'}}</span>
+                    </div>
+    
+                    <div *ngIf="col.type == 'textarea'">
+                        <textarea>{{rowData[col.field]}}</textarea>
+                    </div>
+    
+                    <div *ngIf="col.type == 'date'">
+                        <span>{{ rowData[col.field] | date : 'mediumDate' || 'N/A' }}</span>
+                    </div>
+    
+                    <div *ngIf="col.type == 'datetime'">
+                        <span>{{ rowData[col.field] | date : 'medium' || 'N/A' }}</span>
+                    </div>
+    
+                    <div *ngIf="col.type == 'link'">
+                        <a href="javascript:void(0)" (click)="onLinkClick(col.routerLink, rowData[col.field],i,rowData)" class="color_Evs_blue bold" pTooltip="{{rowData[col.valueField]}}" tooltipPosition="bottom">
+                            <span>{{rowData[col.valueField]}}</span>
+                        </a>
+                    </div>
+    
+                    <div *ngIf="col.type == 'edit'" class="table_icons">
+                        <a href="javascript:void(0)" (click)="onEdit(col.routerLink, rowData[col.field])" pTooltip="Edit" tooltipPosition="bottom">
+                            <i class="fas fa-edit size17"></i>
+                        </a>
+                    </div>
+    
+                    <div *ngIf="col.type == 'delete'" class="table_icons">
+                        <a href="javascript:void(0)" (click)="onDelete(rowData[col.field])" pTooltip="Delete" tooltipPosition="bottom">
+                            <i class="fas fa-times size17"></i>
+                        </a>
+                    </div>
+    
+                    <div *ngIf="col.type == 'action'" class="table_icons">
+                        <a href="javascript:void(0)" *ngIf="isEdit(rowData[col.field])" (click)="onAction('Edit',i,rowData)" pTooltip="Edit" tooltipPosition="bottom">
+                            <i class="fa fa-edit fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isDownload(rowData[col.field])" (click)="onAction('Download',i,rowData)" pTooltip="Download" tooltipPosition="bottom">
+                            <i class="fa fa-download fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isDownloadInput(rowData[col.field])" (click)="onAction('DownloadInput',i,rowData)" pTooltip="Download Input File"
+                            tooltipPosition="bottom">
+                            <i class="fa fa-download fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isDownloadOutput(rowData[col.field])" (click)="onAction('DownloadOutput',i,rowData)" pTooltip="Download Output File"
+                            tooltipPosition="bottom">
+                            <i class="fa fa-cloud-download fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isShare(rowData[col.field])" (click)="onAction('Share',i,rowData)" pTooltip="Share" tooltipPosition="bottom">
+                            <i class="fa fa-share-alt fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isCopy(rowData[col.field])" (click)="onAction('Copy',i,rowData)" pTooltip="Copy" tooltipPosition="bottom">
+                            <i class="fa fa-copy fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isDisable(rowData[col.field])" (click)="onAction('Disable',i,rowData)" pTooltip="Disable" tooltipPosition="bottom">
+                            <i class="fa fa-times-rectangle-o fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isEnable(rowData[col.field])" (click)="onAction('Enable',i,rowData)" pTooltip="Enable" tooltipPosition="bottom">
+                            <i class="fa fa-check-square-o fa-lg"></i>
+                        </a>
+                        <a href="javascript:void(0)" *ngIf="isDelete(rowData[col.field])" (click)="onAction('Delete',i,rowData)" pTooltip="Disable" tooltipPosition="bottom">
+                            <i class="fa fa-trash-o fa-lg"></i>
+                        </a>
+                    </div>
+                </td>
+            </ng-container>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage" let-columns>
+        <tr>
+            <td [attr.colspan]="columns.length">
+                No records found
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="400">
+</p-confirmDialog>	
+    
+
+
+
+
+

@@ -1,0 +1,172 @@
+/*==================================================
+=            Bootstrap 3 Media Queries             =
+==================================================*/
+
+    /*==========  Non-Mobile First Method  ==========*/
+
+    /* Large Devices, Wide Screens */
+    @media only screen and (max-width : 1200px) {
+		
+div.dataTables_wrapper div.dataTables_filter {
+    position: absolute;
+    top: -46px;
+    left: -456px;
+}
+
+.filterBox:after {
+    position: absolute;
+    top: -9px;
+    right: 52px;}
+
+}
+
+
+
+    /* Medium Devices, Desktops */
+    @media only screen and (max-width : 992px) {
+		
+	
+.tab-content .h3, h3 {
+    font-size: 18px;
+    display: block;
+    clear: both;
+    padding-top: 20px;
+}
+#vtab2 table { width:700px;}
+#vtab3 table { width:900px;}
+  
+	#spanCategory{overflow: scroll;}
+	
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (max-width : 768px) {
+	
+	#withholdingtax_requests2_filter {
+    top: -195px;
+}
+.withhol_filter_date {
+    right: -146px !important;
+    top: -22px !important;
+}
+		
+			.filterBox:after {
+    top: -9px;
+    right: 15px;}
+		
+		div.dataTables_wrapper div.dataTables_filter {
+    position: absolute;
+    top: -46px;
+    left: -350px;
+}
+
+	.widget_shareicon_pos {
+    left: 46px;
+}	
+		
+		.sm_boxes p{ font-size:12px; }
+		
+.panel_sm_section i{     color: #fff;
+    font-size: 28px;
+    margin: 24px 0px;
+    font-weight: lighter;
+}
+.sm_boxes p{ font-size:12px;}
+.panel_sm_section{ padding:10px 20px;}
+
+.wrap {
+    width: 66%;
+}
+.table>tbody>tr>td {
+   
+    padding: 8px 8px;
+}
+
+.well {
+      
+    min-height: 610px;
+	
+}
+.tab-content .h3, h3 {
+    font-size: 18px;
+    display: block;
+    clear: both;
+    padding-top: 20px;
+}
+#vtab2 table { width:700px;}
+#vtab3 table { width:900px;}
+   
+	
+	#spanCategory{overflow: scroll;}
+	
+	 }
+	
+
+    /* Extra Small Devices, Phones */ 
+    @media only screen and (max-width : 480px) {
+		.marginB10Mob { margin-bottom:10px;}
+		.Or_line{display:none;}
+		
+		h1{ font-size:28px;}
+		
+		.wrap { width: 90% !important; }
+		  .searchButton {  padding: 0px 15px; right: -8px;
+}
+		footer { bottom: -100px; }
+.form-signin {
+    max-width: 96%;
+    padding: 15px;
+
+    }
+	
+	.Content_pad{ padding:5px;}
+	
+.Content_pad .borderRightgrey{ border:none;}
+
+.Functions_catool {
+    border:none;
+    min-height: 100px;
+}
+	
+.table-responsive {
+ 
+    border: none;
+}
+
+.borderLeft_greyish{ border:none;}
+#feedback {
+    position: fixed;
+    right: 0;
+    top: 218px;
+    height: 250px;
+    margin-left: -3px;
+    margin-bottom: -3px;
+    z-index: 999;
+}
+	#feedback-form {
+    float: right;
+    width: 300px;}
+	
+		.well {   
+	min-height: auto;
+	
+	}
+
+#reportrange{ margin:10px 0px 30px 0px;}
+
+
+	}
+	
+    /* Custom, iPhone Retina */ 
+    @media only screen and (max-width : 320px) {
+		
+		#feedback-form {
+    float: right;
+    width: 244px;
+}
+#feedback {
+    position: fixed;
+    right: 0;
+    top: 160px;}
+
+    }

@@ -1,0 +1,73 @@
+
+#myTable .ui-table .ui-widget-header { border: 0px !important ; }
+#myTable .ui-table .ui-table-thead > tr > th, .ui-table .ui-table-tfoot > tr > td { 
+    border: 0px !important ; 
+    color:#333333;
+}
+#myTable .ui-table .ui-table-tbody > tr > td { 
+    border: 0px !important ; 
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+#myTable .ui-table.ui-table-hoverable-rows .ui-table-tbody > tr:not(.ui-state-highlight):not(.ui-contextmenu-selected):hover{
+    background-color: #ffffff !important;
+}
+#myTable .ui-table input[type=text] {
+    background-clip: border-box;
+    height: 34px;
+}
+#myTable .ui-table .ui-table-caption {
+    font-weight: unset;
+    height: 45px;
+    background: #fff;
+}
+#myTable .ui-table .ui-widget-header #buttons a {
+    color: #ffffff;
+}
+
+#myTable label{ font-weight: unset;}
+
+#tblPreference label, 
+#tblCAProcessing label,
+#tblCAProcessingDashboard label,
+#tblClients label,
+#tblAccounts label,
+#tblUsers label{ margin:0px; }
+
+#tblPreference .ui-dropdown .ui-dropdown-label,
+#tblCAProcessing .ui-dropdown .ui-dropdown-label,
+#tblCAProcessingDashboard .ui-dropdown .ui-dropdown-label { display: block;}
+
+#myTable #search input[type=text] {
+    height: 30px;   
+    background-image: url(../../../assets/img/search_icon.png);
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-position: 149px 2px !important;
+    width: 180px !important;
+    border-radius: 10px;
+    box-shadow: none;
+    border: 1px solid #e7e5ea;
+    box-shadow: inset 0 1px 1px rgb(255, 255, 255);
+    -webkit-box-shadow: inset 0 1px 1px rgb(255, 255, 255);
+    -moz-box-shadow: inset 0 1px 1px rgb(255, 255, 255);
+    outline:none;
+}
+
+#tblPreference #filterSection label,
+#tblCAProcessing #filterSection label{ 
+    font-weight: 700;
+    float: left;
+    margin-top: 10px;
+}
+
+#tblPreference #myTable .ui-table .ui-table-caption,
+#tblCAProcessing #myTable .ui-table .ui-table-caption{
+    height: 140px;
+}
+
+#searchDDL label{
+    margin-top: 3px !important;
+    text-align: left;
+}

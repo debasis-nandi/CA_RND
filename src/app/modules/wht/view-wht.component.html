@@ -1,0 +1,271 @@
+<!-- <my-spinner [loading]="loading"></my-spinner> -->
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">View Withholding Tax </h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">View Withholding Tax </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget " id="form_section">
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+
+                        <p-table id="tableWht" #tableWht [paginator]="paginator" 
+                            [rows]="10" 
+                            [first]="0" 
+                            [scrollable]="true"
+                            scrollHeight="300px" 
+                            [rowsPerPageOptions]="[5,10,20]"
+                            [globalFilterFields]="['taxname','country','effectiveFromDate','effectiveToDate', 'WHTType']" 
+                            [value]="groupDataList"
+                            [loading]="loading" dataKey="taxid">
+
+                            <ng-template pTemplate="caption">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div id="search" class="col-md-4 col-sm-4 col-xs-12 pull-left padding0">
+                                        <input type="text" pInputText size="50" class="pull-left" placeholder=" Search" (input)="tableWht.filterGlobal($event.target.value, 'contains')">
+                                    </div>
+                                    <div id="buttons" class="col-md-8 col-sm-8 col-xs-12 pull-right padding0" style="text-align: right;">
+                                        <a href="javascript:void(0)" class="pull-right btn CA_Tool_Btn marginL10" (click)="open('AddNew')">
+                                            <i class="fa fa-plus"></i> Add New</a>
+                                        <a href="javascript:void(0)" class="pull-right btn CA_Tool_Btn marginL10" (click)="open('BulkUpload')">
+                                            <i class="fa fa-upload"></i> Bulk Upload</a>
+                                    </div>
+                                </div>
+                                <div id="filterSection" class="col-md-12 col-sm-12 col-xs-12 padding0 tax_filters_sec withholding_filters_pos">
+                                    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+                                        <!-- <div class="col-md-1 col-sm-3 col-xs-12 marginT25 ">
+                                                    <p class="bold size16">Filter by</p>
+                                                </div> -->
+
+                                        <div class="col-md-2 col-sm-3 col-xs-12 ">
+                                            <label>WHT Type</label>
+                                            <select formControlName="whtType" class="form-control " (change)="onChangeWhtType($event.target.value)">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let wht of whtTypeOption" [value]="wht.value">{{wht.label}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-3 col-xs-12 marginB5">
+                                            <label> Effective from</label>
+                                            <div class="pos_relative" id="Date_pick_ico">
+                                                <my-date-picker formControlName="effectiveFrom" class="" [options]="searchFromDateFormat" (dateChanged)="searchOnDateChanged($event)">
+                                                </my-date-picker>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-3 col-xs-12 marginB5">
+                                            <label> Effective To</label>
+                                            <div class="pos_relative" id="Date_pick_ico">
+                                                <my-date-picker formControlName="effectiveTo" class="" [options]="searchToDateFormat">
+                                                </my-date-picker>
+                                                <div *ngIf="searchForm.get('effectiveTo').errors && (searchForm.get('effectiveTo').dirty || searchForm.get('effectiveTo').touched)">
+                                                    <div *ngIf="searchForm.get('effectiveTo').hasError('required')">
+                                                        <span class="error">Required effective to date.</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-3 col-xs-12 ">
+                                            <label>Country</label>
+                                            <!-- <select formControlName="country" class="form-control " (change)="onChangeCountry($event.target.value)">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let coun of searchCountryOption" [value]="coun.value">{{coun.label}}</option>
+                                            </select> -->
+                                            <p-dropdown id="searchDDL" formControlName="country" [options]="searchCountryOption" [filter]="true" filterBy="label"
+                                                (onChange)="onChangeCountry($event.value)" [style]="{'width':'100%', 'height':'36px', 'border-bottom-color':'#d8d8d8'}"
+                                                styleClass="marginT0">
+                                            </p-dropdown>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-3 col-xs-12  paddingL5">
+                                            <label>Tax Schedule Name</label>
+                                            <!-- <select formControlName="txtScheduleName" class="form-control ">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let schName of searchScheduleNameOption" [value]="schName.value">{{schName.label}}</option>
+                                            </select> -->
+                                            <p-dropdown id="searchDDL" formControlName="txtScheduleName" [options]="searchScheduleNameOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'36px', 'border-bottom-color':'#d8d8d8'}"
+                                                styleClass="marginT0">
+                                            </p-dropdown>
+                                        </div>
+
+                                        <div class="col-md-1 col-sm-3 col-xs-12 marginT25 paddingL10">
+                                            <!-- <a href="javscript:void(0)" id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left"> Search</a> -->
+                                            <button id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left" type="submit" [disabled]="searchForm.invalid">Apply Filter</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th class="width30"></th>
+                                    <th class="width200">Tax Schedule Name</th>
+                                    <th class="width150">Country</th>
+                                    <th class="width150">Effective From</th>
+                                    <th class="width150">Effective To</th>
+                                    <th class="width100">Tax Rate</th>
+                                    <th class="width100">WHT Type</th>
+                                    <th class="width100">REIT</th>
+                                    <th class="width100">Action</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-expanded="expanded" let-columns="columns">
+                                <tr class="ui-widget-header">
+                                    <td class="width30">
+                                        <a href="#" [pRowToggler]="rowData">
+                                            <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down fa-lg text-primary' : 'fa fa-fw fa-chevron-circle-right fa-lg text-primary'"></i>
+                                        </a>
+                                    </td>
+                                    <td class="width200 text-primary">{{rowData.taxname}}</td>
+                                    <td class="width150"></td>
+                                    <td class="width150"></td>
+                                    <td class="width150"></td>
+                                    <td class="width100"></td>
+                                    <td class="width100"></td>
+                                    <td class="width100"></td>
+                                    <td class="width100"></td>
+                                    <!-- <td class="width150">{{rowData.country}}</td>
+                                                <td class="width150">{{rowData.effectivefromDate}}</td>
+                                                <td class="width150">{{rowData.effectivetoDate}}</td>
+                                                <td class="width100">{{rowData.taxrate}}</td>
+                                                <td class="width100">{{rowData.WHTType}}</td>
+                                                <td class="width100">{{rowData.reit1}}</td>
+                                                <td class="width100"></td> -->
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                                <tr *ngFor="let row of rowData.childRecord; let i = index">
+                                    <td class="width30"></td>
+                                    <td class="width200">{{row.taxname}}</td>
+                                    <td class="width150">
+                                        <div *ngIf="row['edit']">
+                                            <!-- <select [(ngModel)]="row.countryid" class="form-control ">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let ctry of countryOption" [value]="ctry.value">{{ctry.label}}</option>
+                                            </select> -->
+                                            <p-dropdown id="searchDDL2" [(ngModel)]="row.countryid" [options]="countryOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'40px', 'border-bottom-color':'#d8d8d8'}"
+                                                styleClass="marginT0">
+                                            </p-dropdown>
+                                        </div>
+                                        <div *ngIf="!row['edit']">
+                                            {{row.country}}
+                                        </div>
+                                    </td>
+                                    <td class="width150">
+                                        <div *ngIf="row['edit']">
+                                            <my-date-picker [(ngModel)]="row.effectiveFromDatePicker" [options]="myFromDateFormat" class="" [style]="{'width':'100%'}">
+                                            </my-date-picker>
+                                        </div>
+                                        <div *ngIf="!row['edit']">
+                                            {{row.effectivefromDate}}
+                                        </div>
+                                    </td>
+                                    <td class="width150">
+                                        <div *ngIf="row['edit']">
+                                            <my-date-picker [(ngModel)]="row.effectiveToDatePicker" [options]="myToDateFormat" class="" [style]="{'width':'100%'}">
+                                            </my-date-picker>
+                                        </div>
+                                        <div *ngIf="!row['edit']">
+                                            {{row.effectivetoDate}}
+                                        </div>
+                                    </td>
+                                    <td class="width100">
+                                        <div *ngIf="row['edit']">
+                                            <input type="text" pInputText pKeyFilter="num" [(ngModel)]="row.taxrate" class="form-control">
+                                        </div>
+                                        <div *ngIf="!row['edit']">
+                                            {{row.taxrate}}
+                                        </div>
+                                    </td>
+                                    <td class="width100">
+                                        <div *ngIf="row['edit']">
+                                            <select [(ngModel)]="row.WHTType" class="form-control ">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let wht of whtTypeOption" [value]="wht.value">{{wht.label}}</option>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="!row['edit']">
+                                            {{row.WHTType}}
+                                        </div>
+                                    </td>
+                                    <td class="width100">
+                                        <div *ngIf="row['edit']">
+                                            <select [(ngModel)]="row.reit1" class="form-control ">
+                                                <option value="">Select</option>
+                                                <option *ngFor="let reit of reitOption" [value]="reit.value">{{reit.label}}</option>
+                                            </select>
+                                        </div>
+                                        <div *ngIf="!row['edit']">
+                                            {{row.reit1}}
+                                        </div>
+                                    </td>
+                                    <td class="width100">
+                                        <a *ngIf="!row['edit']" href="javascript:void(0)" (click)="onRowEditInit(rowData, rowIndex, i)" pTooltip="Edit" tooltipPosition="bottom">
+                                            <i class="fa fa-pencil-square fa-lg text-primary"></i>
+                                        </a>
+                                        <a *ngIf="row['edit']" href="javascript:void(0)" (click)="onRowEditSave(rowData, rowIndex, i)" pTooltip="Save" tooltipPosition="bottom">
+                                            <i class="fa fa-check-square fa-lg text-success" style="margin-right: 5px;"></i>
+                                        </a>
+                                        <a *ngIf="row['edit']" href="javascript:void(0)" (click)="onRowEditCancel(rowData, rowIndex, i)" pTooltip="Cancel" tooltipPosition="bottom">
+                                            <i class="fa fa-times-rectangle fa-lg text-danger"></i>
+                                        </a>
+                                        <a href="javascript:void(0)" (click)="onRowDisabled(rowData, rowIndex, i)" pTooltip="Disable" tooltipPosition="bottom">
+                                            <i class="fa fa-trash-o fa-lg" style="margin-left: 5px;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage" let-columns>
+                                <tr>
+                                    <td [attr.colspan]="8">
+                                        No records found
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<modal id="whtModal" #myModal [hideCloseButton]="true" [closeOnEscape]="false" [closeOnOutsideClick]="false" [modalClass]="modalCss">
+    <modal-header>
+        <span class="bold size18">{{modalHeader}}</span>
+        <button type="button" (click)="close()" class="close">
+            <i class="fa fa-times-circle"></i>
+        </button>
+    </modal-header>
+
+    <modal-content>
+        <app-add-wht *ngIf="isAddNew" (valueChange)="onAddNew($event)"></app-add-wht>
+        <app-bulkupload-wht *ngIf="isBulkUpload" (valueChange)="onBulkUpload($event)"></app-bulkupload-wht>
+    </modal-content>
+
+    <modal-footer>
+        <!-- <button class="btn btn-primary" (click)="myModal.close()">close</button> -->
+    </modal-footer>
+</modal>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="400">
+</p-confirmDialog>

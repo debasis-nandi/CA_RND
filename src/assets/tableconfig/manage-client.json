@@ -1,0 +1,127 @@
+{
+    "table": {
+        "paginator": true,
+        "rows": 10,
+        "rowsPerPageOptions": [5,10,20],
+        "reorderableColumns": true,
+        "responsive": false,
+        "globalsearch": true,
+        "resizableColumns": false,
+        "scrollable": true,
+        "scrollHeight": "300px",
+        "first":0,
+        "selectionMode":"",
+        "globalFilterFields":["clientname","client_domain","subscription_start","subscription_end","createdby","createddate"]
+    },
+    "columns": [
+        {
+            "field": "clientid",
+            "header": "Client Id",
+            "sortable": true,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": true,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "clientid",
+            "header": "Client Name",
+            "sortable": true,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "link",
+            "valueField": "clientname",
+            "routerLink": "admin/client"
+        },
+        {
+            "field": "client_domain",
+            "header": "Client Domain",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "subscription_start",
+            "header": "Subscription Start",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "subscription_end",
+            "header": "subscription End",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "createdby",
+            "header": "Created By",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "createddate",
+            "header": "Created Date",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "is_active",
+            "header": "Active",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width100",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "action",
+            "header": "Action",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width80",
+            "hidden": false,
+            "type": "action",
+            "valueField": "",
+            "routerLink": ""
+        }
+    ],
+    "rows": []
+}

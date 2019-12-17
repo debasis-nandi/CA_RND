@@ -1,0 +1,22 @@
+#historicalAcc .ui-accordion .ui-accordion-header{ border: 0px !important; }
+#historicalAcc .ui-accordion .ui-accordion-header.ui-state-active{ background: #f6f7f9 !important; }
+#historicalAcc .panel-body { padding: 0px; }
+#historicalAcc .ui-widget-content{ color:#505050; }
+#historicalAcc .ui-widget{ font-family:'FSAlbert', Arial, Helvetica, sans-serif; }
+
+.ui-messages.ui-messages-success {
+    background-color: #b7d8b7;
+    border: 0 none;
+    color: #212121;
+}
+
+.ui-messages.ui-messages-error {
+    background-color: #f8b7bd;
+    border: 0 none;
+    color: #212121;
+}
+
+#searchDDL label{
+    margin-top: 8px !important;
+    text-align: left;
+}

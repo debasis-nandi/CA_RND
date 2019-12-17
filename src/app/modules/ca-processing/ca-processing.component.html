@@ -1,0 +1,74 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">View CA Request </h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">View CA Request </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget " id="form_section">
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+                        <my-datatable id="tblCAProcessing" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows"
+                            [tableName]="tableName" [preferenceOption]="preferenceOption" (valueChange)='onAction($event)'>
+                        </my-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<div id="Download_ca_request" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="bold size18">Choose Input / Output type </span>
+                <button type="type" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="fa fa-times-circle"></i>
+                </button>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 marginT20 marginB10">
+                <div class="col-md-6 col-sm-6 col-xs-12 padding0 ">
+                    <label class="control control--radio">
+                        Download Input
+                        <input type="radio" name="radio" checked="checked">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12  padding0">
+                    <label class="control control--radio ">
+                        Download Output
+                        <input type="radio" name="radio">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12 col-sm-12 col-xs-12 marginT10 marginB20 text-center">
+
+                <button class="btn CA_Tool_Small_Btn" type="submit">Download</button>
+            </div>
+
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<my-spinner [loading]="loading"></my-spinner>

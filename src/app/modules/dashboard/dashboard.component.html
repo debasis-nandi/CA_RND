@@ -1,0 +1,226 @@
+<div class="container marginT10">
+    <section class="Main padding10">
+
+        <div class="row">
+            <div class="col-md-3 col-xs-12 col-sm-4">
+                <h2 class="main_head"> Download</h2>
+                <div class="catool_widget template_selection">
+                    <p class="size18 bold paddingTop10 paddingL15">Templates & Guidelines</p>
+                    <p-dropdown [options]="templateOption" [(ngModel)]="selectedTemplate" [filter]="true" filterBy="label" styleClass="form-control"
+                        [style]="{'margin-left':'10px', 'width':'225px'}"></p-dropdown>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 text-center  download_share_icons widget_shareicon_pos">
+                        <div class="pos_relative">
+                            <a href="javascript:void(0)" (click)="onDownload()">
+                                <i class="fa fa-cloud-download paddingRight15 download_share_iconsi" data-toggle="tooltip" data-placement="left" title=""
+                                    data-original-title="Download"></i>
+                            </a>
+                            <!-- <a href="javascript:void(0)" id="pop2">
+                                                    <i class="fa fa-share-alt-square download_share_iconsi" data-toggle="tooltip" data-placement="right"
+                                                        title="" data-original-title="Share"></i>
+                                                </a> -->
+            
+                            <div class="toggleMe1">
+                                <div class="filterBox animated fadeInDown">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+                                        <div class="form-group">
+                                            <select id="Userselect" name="Userselect[]" multiple class="form-control">
+                                                <option value="User1">User 1</option>
+                                                <option value="User2">User 2</option>
+                                                <option value="User3">User 3</option>
+                                                <option value="User4">User 4</option>
+                                                <option value="User5">User 5</option>
+                                                <option value="User6">User 6</option>
+                                                <option value="User7">User 7</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+            
+                                            <input type="text" class="form-control" placeholder="Username@email.com " required>
+                                        </div>
+            
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 text-center">
+                                        <button class="btn CA_Tool_Small_Btn" type="submit">Share</button>
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-xs-12 col-sm-8 ">
+                <h2 class="main_head">Request History </h2>
+                <a href="javascript:void(0)">
+                    <i class="fa fa-filter filter_icon" data-toggle="tooltip" data-placement="left" title="" data-original-title="Filter"></i>
+                </a>
+                <div class="pos_relative  filter_panel" style="display:none;">
+                    <div class="col-md-4 col-sm-5 col-xs-12 panel home_filter_box padding0">
+                        <div class="panel-heading">
+
+                            <!-- Tabs -->
+                            <ul class="nav panel-tabs">
+                                <li class="active">
+                                    <a href="#tab1" data-toggle="tab">Date</a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab">Others</a>
+                                </li>
+                            </ul>
+                            <a href="javascript:void(0)" class="tab_panell_close">
+                                <i class="fa fa-times-circle-o"></i>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tab1">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label>From</label>
+                                            <my-date-picker class="" [options]="fromDateFormat" [(ngModel)]="fromDate" (dateChanged)="onDateChanged($event)">
+                                            </my-date-picker>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 marginT5">
+                                            <label>To</label>
+                                            <my-date-picker class="" [options]="toDateFormat" [(ngModel)]="toDate">
+                                            </my-date-picker>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 marginT20 text-center paddingBottom10">
+                                            <button class="btn CA_Tool_Small_Btn" type="button" (click)="onSearch()">Search</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tab2">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <label>Preference</label>
+                                            <select class="form-control " [(ngModel)]="preference">
+                                                <option value="">Select Preference</option>
+                                                <option *ngFor="let pre of preferencesOption" [value]="pre.value">{{pre.label}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12 col-sm-12 col-xs-12 marginT5">
+                                            <label>Keywords</label>
+                                            <textarea class="form-control" rows="5" placeholder="" value="" [(ngModel)]="keyword" style="height:50px;"></textarea>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-xs-12 marginT20 text-center paddingBottom10">
+                                            <button class="btn CA_Tool_Small_Btn" type="button" (click)="onSearch()">Search</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="catool_widget">
+                    <my-datatable id="tblCAProcessingDashboard" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows"
+                        [tableName]="tableName" (valueChange)='onAction($event)'>
+                    </my-datatable>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- <section class="boxes">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 panel_sm_section ">
+                <div class="row">
+                    <a href="view-CA-request.html">
+                        <div class="col-md-3 col-sm-3 col-xs-12 bold">
+                            <div class="sm_boxes">
+                                <div class="col-md-4 col-sm-4 col-xs-4 purple_bg M_H80 Center_text">
+                                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                </div>
+                                <div class="col-md-8 col-xs-8 col-sm-8 marginT20  Color_purple">
+                                    <p> TOTAL REQUESTS </p>
+                                    <p class="bold size18">215</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                    <a href="view-withholding-tax.html">
+                        <div class="col-md-3 col-sm-3 col-xs-12 bold">
+                            <div class="sm_boxes">
+                                <div class="col-md-4 col-xs-4 light_purle_bg M_H80 Center_text">
+                                    <i class="fa fa-database"></i>
+                                </div>
+                                <div class="col-md-8 col-xs-8 col-sm-8 marginT20 Color_light_purle ">
+                                    <p> WITHHOLDING TAX </p>
+                                    <p class="bold size18">110</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="add-CA-request.html">
+                        <div class="col-md-3 col-sm-3 col-xs-12 bold">
+                            <div class="sm_boxes">
+                                <div class="col-md-4 col-xs-4 blue_bg M_H80 Center_text">
+                                    <i class="fa fa-calendar-plus-o"></i>
+                                </div>
+                                <div class="col-md-8 col-xs-8 col-sm-8 marginT20 Color_blue ">
+                                    <p> CREATE NEW CA</p>
+                                    <p class="bold size18">Request</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="process_data.html">
+                        <div class="col-md-3 col-sm-3 col-xs-12 bold">
+                            <div class="sm_boxes">
+                                <div class="col-md-4 col-xs-4 lg_blue_bg M_H80 Center_text">
+                                    <i class="fa fa-search-plus"></i>
+                                </div>
+                                <div class="col-md-8 col-xs-8 col-sm-8 marginT20 Color_light_blue ">
+                                    <p> HISTORICAL DATA</p>
+                                    <p class="bold size18">Search</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+    <!-- <section class="Charts">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <h2 class="main_head">Requests Chart View</h2>
+                <a href="add-CA-request.html" class="pull-right btn CA_Tool_Btn marginB10Mob">
+                    <i class="fa fa-plus"></i> Add New Request</a>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="catool_widget_graph">
+                    <img src="src/assets/img/graph1.jpg" class="img-responsive">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="catool_widget_graph">
+                    <img src="src/assets/img/graph2.jpg" class="img-responsive">
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="catool_widget_graph">
+                    <img src="src/assets/img/graph3.jpg" class="img-responsive">
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+</div>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>

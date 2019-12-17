@@ -1,0 +1,115 @@
+.ui-fileupload-buttonbar button:nth-child(2){
+    display:none !important;
+}
+.ui-fileupload-buttonbar button:nth-child(3){
+    display:none !important;
+}
+.ui-fileupload-files{
+      display:none !important;
+}
+.ui-fileupload-content {
+    padding: 0 !important;
+}
+
+#preferenceAcc .ui-accordion .ui-accordion-header,
+#inputCriteriaAcc .ui-accordion .ui-accordion-header,
+#sanityCheckAcc .ui-accordion .ui-accordion-header{ border: 0px !important; }
+#preferenceAcc .ui-accordion .ui-accordion-header.ui-state-active,
+#inputCriteriaAcc .ui-accordion .ui-accordion-header.ui-state-active,
+#sanityCheckAcc .ui-accordion .ui-accordion-header.ui-state-active{ background: #f6f7f9 !important; }
+
+a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    background:none;
+}
+
+#flatTaxRate{
+    display: inline;
+    width: 35%;
+}
+
+
+.ui-table .ui-widget-header { border: 0px !important ; }
+.ui-table .ui-table-thead > tr > th, .ui-table .ui-table-tfoot > tr > td { 
+    border: 0px !important ; 
+    color:#333333;
+}
+.ui-table .ui-table-tbody > tr > td { border: 0px !important ; }
+
+.ui-table.ui-table-hoverable-rows .ui-table-tbody > tr:not(.ui-state-highlight):not(.ui-contextmenu-selected):hover{
+    background-color: #ffffff !important;
+}
+#tableSanity .ui-table input[type=text] {
+    background-clip: border-box;
+    height: 30px;
+}
+.ui-table .ui-table-caption {
+    font-weight: unset;
+    height: 45px;
+    background: #fff;
+}
+.ui-table .ui-widget-header #buttons a {
+    color: #ffffff;
+}
+
+#tableSanity label{ font-weight: unset;}
+#tableSanity label{ margin:0px; }
+#tableSanity .ui-dropdown .ui-dropdown-label,
+#tableSanity .ui-dropdown .ui-dropdown-label { display: block;}
+
+/*#form_section #inputCriteriaAppTab label { margin-top: 0px; }*/
+
+.ui-messages.ui-messages-success {
+    background-color: #b7d8b7;
+    border: 0 none;
+    color: #212121;
+}
+
+#form_section #tblInputCriteria label {
+    margin-top: 0px;
+}
+
+#tableSanity label{
+    float: left;
+    margin-right:15px;
+    font-size: 14px;
+}
+
+#tableSanity label a {
+    margin-left: 70px;
+    font-size: 14px;
+    color: #337ab7 !important;
+}
+
+#tableSanity .ui-table .ui-table-caption {
+    background: #fff;
+    font-weight: bold;
+    height: 30px;
+}
+
+#inputCriteriaAppTab .ui-widget-content a{ color: #337ab7 !important; }
+
+#opCountryTaxRate .ui-overlaypanel-content {
+    width: 500px;
+}
+
+#tblCountryTaxRate tbody{ height: 300px; overflow-y: scroll; }
+
+#searchDDL label{
+    margin-top: 8px !important;
+    text-align: left;
+}
+
+.ui-overlaypanel{left: 174px !important; top: 318px !important;}
+
+#form_section .table>tbody>tr>td { vertical-align: top;}
+#flatTaxRate {
+    display: block;
+    width: 75%;
+    margin: 2px 28px;
+    height: 36px;
+}
+
+/*.ui-fileupload-buttonbar{text-align:center;}*/
+.pc-table-row{ width:170px; vertical-align:top; }

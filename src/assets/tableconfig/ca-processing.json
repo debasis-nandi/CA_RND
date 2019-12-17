@@ -1,0 +1,115 @@
+{
+    "table": {
+        "paginator": true,
+        "rows": 10,
+        "rowsPerPageOptions": [5,10,20],
+        "reorderableColumns": true,
+        "responsive": false,
+        "globalsearch": true,
+        "resizableColumns": false,
+        "scrollable": true,
+        "scrollHeight": "300px",
+        "first":0,
+        "selectionMode":"",
+        "globalFilterFields":["fileName", "preferenceID__profileName","createddate","output__createddate","keywords","createdby"]
+    },
+    "columns": [
+        {
+            "field": "requestID",
+            "header": "REQUEST ID",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": true,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "requestID",
+            "header": "FILE NAME",
+            "sortable": true,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width250",
+            "hidden": false,
+            "type": "link",
+            "valueField": "fileName",
+            "routerLink": "ca-processing/ca-processing-add"
+        },
+        {
+            "field": "preferenceID__profileName",
+            "header": "PREFERENCES",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width200",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "createddate",
+            "header": "Processed Date",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width100",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "output__createddate",
+            "header": "Output Date",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width100",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "keywords",
+            "header": "KEYWORDS",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width100",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "createdby",
+            "header": "User",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width150",
+            "hidden": false,
+            "type": "text",
+            "valueField": "",
+            "routerLink": ""
+        },
+        {
+            "field": "action",
+            "header": "Action",
+            "sortable": false,
+            "filter": false,
+            "filterMatchMode": "contains",
+            "styleClass": "width100",
+            "hidden": false,
+            "type": "action",
+            "valueField": "",
+            "routerLink": ""
+        }
+    ],
+    "rows": []
+}

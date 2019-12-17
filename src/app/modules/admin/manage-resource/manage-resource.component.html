@@ -1,0 +1,80 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">View Resources </h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">View Resources </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget " id="form_section">
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+                        <my-datatable id="tblResources" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows" [tableName]="tableName"
+                            (valueChange)='onAction($event)'>
+                        </my-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<modal id="resourceModal" #myModal [hideCloseButton]="true" [closeOnEscape]="false" [closeOnOutsideClick]="false" [modalClass]="modalCss">
+    <modal-header>
+        <span class="bold size18">{{modalHeader}}</span>
+        <button type="button" (click)="close()" class="close">
+            <i class="fa fa-times-circle"></i>
+        </button>
+    </modal-header>
+
+    <modal-content>
+        <p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+        <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                <label>Client</label><span class="astarics" *ngIf="!isReadOnly"> *</span>
+                <select [(ngModel)]="clientId" class="form-control" ngDefaultControl (change)="onChangeClient($event.target.value)" [disabled]="isReadOnly">
+                    <option value="">Select</option>
+                    <option *ngFor="let cli of clientOption" [value]="cli.value">{{cli.label}}</option>
+                </select>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                <label>Role</label><span class="astarics" *ngIf="!isReadOnly"> *</span>
+                <select [(ngModel)]="roleId" class="form-control " ngDefaultControl [disabled]="isReadOnly">
+                    <option value="">Select</option>
+                    <option *ngFor="let rol of roleOption" [value]="rol.value">{{rol.label}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+            <div class="col-md-12 col-sm-6 col-xs-12 ">
+                <label>Resource</label><span class="astarics" *ngIf="!isReadOnly"> *</span>
+                <p-tree *ngIf="resourceList.length > 0" ngDefaultControl styleClass="tree-view" 
+                    [(selection)]="selectedResource" 
+                    [value]="resourceList" 
+                    (onNodeSelect)="nodeSelect($event)"
+                    (onNodeUnselect)="nodeUnselect($event)"
+                    selectionMode="checkbox">
+                </p-tree>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </modal-content>
+    <modal-footer>
+        <button *ngIf="!isReadOnly" (click)="onSubmit()" class="btn CA_Tool_Small_Btn" type="button">Submit</button>
+        <button class="btn CA_Tool_Small_Btn" (click)="close()">Close</button>
+    </modal-footer>
+</modal>

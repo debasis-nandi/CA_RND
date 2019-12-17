@@ -1,0 +1,104 @@
+.ui-table .ui-widget-header { border: 0px !important ; }
+.ui-table .ui-table-thead > tr > th, .ui-table .ui-table-tfoot > tr > td { 
+    border: 0px !important ; 
+    color:#333333;
+}
+.ui-table .ui-table-tbody > tr > td { border: 0px !important ; height: 34px; }
+
+.ui-table.ui-table-hoverable-rows .ui-table-tbody > tr:not(.ui-state-highlight):not(.ui-contextmenu-selected):hover{
+    background-color: #ffffff !important;
+}
+#tableWht .ui-table input[type=text] {
+    background-clip: border-box;
+    /*height: 25px;
+    width: 100%;*/
+}
+#tableWht .ui-table .ui-table-caption {
+    font-weight: unset;
+    height: 140px;
+    background: #fff;
+}
+#tableWht .ui-table .ui-widget-header #buttons a {
+    color: #ffffff;
+}
+
+#tableWht label{ margin:0px; }
+#tableWht .ui-dropdown .ui-dropdown-label { display: block;}
+#tableWht label{ font-weight: unset;}
+#tableWht #search input[type=text]{
+    height: 30px;
+    width:70%;
+}
+
+#tableWht .form-control {
+    height: 36px;
+    padding: 4px 4px;
+    width: 99%;
+}
+
+/* override css for file upload control */
+
+.ui-fileupload-buttonbar button:nth-child(2){
+    display:none !important;
+}
+.ui-fileupload-buttonbar button:nth-child(3){
+    display:none !important;
+}
+.ui-fileupload-files{
+      display:none !important;
+}
+.ui-fileupload-content {
+    padding: 0 !important;
+}
+
+/*.ui-button, button.ui-button.ui-state-default, .ui-button.ui-state-default {
+    background: #47254a;
+    border: 0 !important; 
+    color: #FFFFFF !important;
+}*/
+
+#tableWht #btnSearch{ color: #fff; }
+#tableWht #filterSection label{ 
+    font-weight: 700;
+    float: left;
+    margin-top: 10px;
+}
+
+
+#whtModal .modal-dialog-600{
+    max-width: 600px !important;
+    width: 600px !important;
+}
+#whtModal .modal-dialog-900{
+    max-width: 900px !important;
+    width: 900px !important;
+}
+
+#tableWht #search input[type=text] {
+    height: 30px;   
+    background-image: url(../../../assets/img/search_icon.png);
+    background-repeat: no-repeat;
+    background-color: #fff;
+    background-position: 149px 2px !important;
+    width: 180px !important;
+    border-radius: 10px;
+    box-shadow: none;
+    border: 1px solid #e7e5ea;
+    box-shadow: inset 0 1px 1px rgb(255, 255, 255);
+    -webkit-box-shadow: inset 0 1px 1px rgb(255, 255, 255);
+    -moz-box-shadow: inset 0 1px 1px rgb(255, 255, 255);
+    outline:none;
+}
+
+.ui-chkbox-label{
+    vertical-align: bottom;
+}
+
+#searchDDL label{
+    margin-top: 5px !important;
+    text-align: left;
+}
+#searchDDL2 label{
+    margin-top: 8px !important;
+    text-align: left;
+}

@@ -1,0 +1,15 @@
+#resourceModal .modal-dialog-600{
+    max-width: 600px !important;
+    width: 600px !important;
+}
+
+#resourceModal .modal-footer {
+    text-align: left;
+}
+
+.tree-view{
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+}
+

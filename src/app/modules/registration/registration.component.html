@@ -1,0 +1,87 @@
+
+<main class="container" id="loginMid">
+    <div class="row">
+        <div class="loginWidth">
+
+            <div class="wrapperLoginForm box col-md-offset-4">
+                <form [formGroup]="registrationForm" class="form-signin animated fadeInUp col-md-12 signup_form" (ngSubmit)="onSubmit()">
+                    <h2 class="form-signin-heading">Sign Up</h2>
+                    <div class="clearfix"></div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 paddingL0 marginB20">
+                        <div>
+                            <input type="text" formControlName="userName" autocomplete="off" />
+                            <label>User Name</label>
+                            <div *ngIf="registrationForm.get('userName').errors && (registrationForm.get('userName').dirty || registrationForm.get('userName').touched)">
+                                <div *ngIf="registrationForm.get('userName').hasError('required')">
+                                    <span class="error">User name is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" formControlName="firstName" autocomplete="off" />
+                            <label>First Name</label>
+                            <div *ngIf="registrationForm.get('firstName').errors && (registrationForm.get('firstName').dirty || registrationForm.get('firstName').touched)">
+                                <div *ngIf="registrationForm.get('firstName').hasError('required')">
+                                    <span class="error">First name is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" formControlName="email" autocomplete="off" />
+                            <label>Email</label>
+                            <div *ngIf="registrationForm.get('email').errors && (registrationForm.get('email').dirty || registrationForm.get('email').touched)">
+                                <div *ngIf="registrationForm.get('email').hasError('required')">
+                                    <span class="error">Email is required.</span>
+                                </div>
+                                <div *ngIf="registrationForm.get('email').hasError('email')">
+                                    <span class="error">Email must be a valid email address.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 paddingR0 marginB20">
+                        <div>
+                            <input type="password" formControlName="password" autocomplete="off" />
+                            <label>Password</label>
+                            <div *ngIf="registrationForm.get('password').errors && (registrationForm.get('password').dirty || registrationForm.get('password').touched)">
+                                <div *ngIf="registrationForm.get('password').hasError('required')">
+                                    <span class="error">Password is required.</span>
+                                </div>
+                                <div *ngIf="registrationForm.get('password').hasError('minlength')">
+                                    <span class="error">Password must be at least 8 characters.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" formControlName="lastName" autocomplete="off" />
+                            <label>Last Name</label>
+                            <div *ngIf="registrationForm.get('lastName').errors && (registrationForm.get('lastName').dirty || registrationForm.get('lastName').touched)">
+                                <div *ngIf="registrationForm.get('lastName').hasError('required')">
+                                    <span class="error">Last name is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" formControlName="accountName" autocomplete="off" />
+                            <label>Account Name</label>
+                            <div *ngIf="registrationForm.get('accountName').errors && (registrationForm.get('accountName').dirty || registrationForm.get('accountName').touched)">
+                                <div *ngIf="registrationForm.get('accountName').hasError('required')">
+                                    <span class="error">Account name is required.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button [disabled]="!registrationForm.valid" class="btn btn-lg btn-primary btn-block CA_Tool_Btn" type="submit">Register with us now</button>
+                    <div class="text-center marginT10 bold">
+                        <a href="javascript:void(0)" (click)="onLogin()">
+                            <small>Login if already register</small>
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>
+<my-spinner [loading]="loading"></my-spinner>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>	

@@ -1,0 +1,88 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">View Accounts </h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">View Accounts </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget " id="form_section">
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+                        <my-datatable id="tblAccounts" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows" [tableName]="tableName"
+                            (valueChange)='onAction($event)'>
+                        </my-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<modal id="accountModal" #myModal [hideCloseButton]="true" [closeOnEscape]="false" [closeOnOutsideClick]="false" [modalClass]="modalCss">
+    <modal-header>
+        <span class="bold size18">{{modalHeader}}</span>
+        <button type="button" (click)="close()" class="close">
+            <i class="fa fa-times-circle"></i>
+        </button>
+    </modal-header>
+
+    <modal-content>
+        <p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+        <form [formGroup]="addAccountForm">
+            <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <label>Account Name</label>
+                    <input type="text" formControlName="accountName" class="form-control" Placeholder="">
+                    <div *ngIf="addAccountForm.get('accountName').errors && (addAccountForm.get('accountName').dirty || addAccountForm.get('accountName').touched)">
+                        <div *ngIf="addAccountForm.get('accountName').hasError('required')">
+                            <span class="error">Account name is required.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <label>Client</label>
+                    <select formControlName="client" class="form-control ">
+                        <option value="">Select</option>
+                        <option *ngFor="let client of clientOption" [value]="client.value">{{client.label}}</option>
+                    </select>
+                    <div *ngIf="addAccountForm.get('client').errors && (addAccountForm.get('client').dirty || addAccountForm.get('client').touched)">
+                        <div *ngIf="addAccountForm.get('client').hasError('required')">
+                            <span class="error">Client is required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+                <div class="col-md-12 col-sm-6 col-xs-12 ">
+                    <label>Keyword(s)</label>
+                    <textarea formControlName="keywords" class="form-control" rows="2" placeholder=""></textarea>
+                    <div *ngIf="addAccountForm.get('keywords').errors && (addAccountForm.get('keywords').dirty || addAccountForm.get('keywords').touched)">
+                        <div *ngIf="addAccountForm.get('keywords').hasError('required')">
+                            <span class="error">Keyword(s) required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+    </modal-content>
+    <modal-footer>
+        <button [disabled]="!addAccountForm.valid" *ngIf="!isReadOnly" (click)="onSubmit()" class="btn CA_Tool_Small_Btn" type="button">Submit</button>
+        <button class="btn CA_Tool_Small_Btn" (click)="close()">Close</button>
+    </modal-footer>
+</modal>

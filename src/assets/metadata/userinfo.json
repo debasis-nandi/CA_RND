@@ -1,0 +1,55 @@
+{
+  "result": true,
+  "message": "Api response.",
+  "user_detail": {
+    "username": "debasis22",
+    "client": "evalueserve",
+    "account": "HCL",
+    "role": "Manager"
+  },
+  "menu": {
+    "Dashboard": [
+      {
+        "resource_id": 2,
+        "resource_name": "Dashboard",
+        "resource_url": "dashboard",
+        "resource_parent": "Dashboard",
+        "resource_sequence": 0
+      }
+    ],
+    "Menu": [
+      {
+        "resource_id": 4,
+        "resource_name": "Preference Management",
+        "resource_url": "preference",
+        "resource_parent": "Menu",
+        "resource_sequence": 2
+      }
+    ],
+    "Analytics": [
+      {
+        "resource_id": 4,
+        "resource_name": "Analytics",
+        "resource_url": "analytics",
+        "resource_parent": "Analytics",
+        "resource_sequence": 0
+      }
+    ],
+    "Admin": [
+      {
+        "resource_id": 4,
+        "resource_name": "User Management",
+        "resource_url": "usermanagement",
+        "resource_parent": "Admin",
+        "resource_sequence": 1
+      },
+      {
+        "resource_id": 4,
+        "resource_name": "Role Management",
+        "resource_url": "rolemanagement",
+        "resource_parent": "Admin",
+        "resource_sequence": 2
+      }
+    ]
+  }
+}

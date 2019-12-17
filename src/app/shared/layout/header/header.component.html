@@ -1,0 +1,113 @@
+<header class="navbar navbar-default bg_white mainNav " data-sr="enter left over 1s wait 0s">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3 hidden-sm hidden-lg hidden-md">
+                <nav id="sidebar">
+                    <div id="dismiss">
+                        <i class="glyphicon glyphicon-arrow-left"></i>
+                    </div>
+                    <div class="sidebar-header">
+                        <img src="src/assets/img/logo.png" class="login"> </div>
+                    <ul class="list-unstyled components">
+                        <li>
+                            <a href="javascript:void(0)">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">Preference</a>
+                        </li>
+                        <li class="active">
+                            <a href="#Request" data-toggle="collapse" aria-expanded="false">Request</a>
+                            <ul class="collapse list-unstyled" id="Request">
+                                <li>
+                                    <a href="javascript:void(0)">Add CA Request</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">View CA Request</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)">Process Data</a>
+                        </li>
+                        <li>
+                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">JOHN SMITH</a>
+                            <ul class="collapse list-unstyled" id="homeSubmenu">
+                                <li>
+                                    <a href="javascript:void(0)">CHANGE PASSWORD</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)">SIGN OUT</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="navbar-header marginT10">
+                    <a id="sidebarCollapse" class="btn ">
+                        <i class="glyphicon glyphicon-menu-hamburger size24  marginT10 hambur_mobile"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-2 col-xs-3 animated fadeInDown marginT15">
+                <a routerLink="/dashboard">
+                    <img src="src/assets/img/logo.png" class="login" />
+                </a>
+            </div>
+            <div class="col-md-10 col-sm-10 header-mid-nav hidden-xs">
+                <ul *ngIf="menu" class="header-nav">
+                    <li *ngIf="isDashboard()" routerLinkActive="selected">
+                        <a routerLink="{{'/'+ menu.Dashboard[0].resource__url}}">
+                            <i class="fa fa-home"></i>
+                            <span class="menu-name">{{menu.Dashboard[0].resource__name}}</span>
+                        </a>
+                    </li>
+                    <li class="dropdown" *ngIf="isMenu()">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="fa fa-object-group"></i>
+                            <span class="menu-name">Menu</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let item of menu.Menu; let i = index" routerLinkActive="selected">
+                                <a routerLink="{{'/'+ item.resource__url}}">{{item.resource__name}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li *ngIf="isAnalytics()" routerLinkActive="selected">
+                        <a routerLink="{{'/'+ menu.Analytics[0].resource__url}}">
+                            <i class="fa fa-line-chart"></i>{{menu.Analytics[0].resource__name}}</a>
+                    </li>
+
+                    <li class="dropdown" *ngIf="isAdmin()">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="fa fa-unlock-alt"></i>
+                            <span class="menu-name">Admin</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let item of menu.Admin; let i = index" routerLinkActive="selected">
+                                <a routerLink="{{'/'+ item.resource__url}}">{{item.resource__name}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" *ngIf="isUserDetail()">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" title="{{ 'Account :'+ menu.Userdetail.account + '\n' + 'Client :'+menu.Userdetail.client + '\n'+ 'Role :'+menu.Userdetail.role}}">
+                            <i class="fa fa-user-circle-o"></i>
+                            <span class="menu-name">{{menu.Userdetail.username}}</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- <li>
+                                <a href="javascript:void(0)">Change Password</a>
+                            </li> -->
+                            <li>
+                                <a href="javascript:void(0)" (click)="signOut()">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="clearfix"></div>

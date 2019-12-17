@@ -1,0 +1,3 @@
+TaxName,Country,WHTType,EffectiveFromDate(mm/dd/yyyy),EffectiveToDate(mm/dd/yyyy),TaxRate,REIT
+Standard,AE,Standard,1/1/2019,12/31/2019,0,0
+

@@ -1,0 +1,22 @@
+﻿
+
+@font-face {
+	font-family: "FSAlbert-Bold";
+	src: url('FSAlbert-Bold.eot');
+	src: url('FSAlbert-Bold.eot?#iefix') format('embedded-opentype'),
+	url('FSAlbert-Bold.svg#Brandon Grotesque Regular') format('svg'),
+	url('FSAlbert-Bold.woff') format('woff'),
+	url('FSAlbert-Bold.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'FS Albert';
+	src: url('FSAlbert.eot');
+	src: url('FSAlbert.eot?#iefix') format('embedded-opentype'),
+		url('FSAlbert.woff') format('woff'),
+		url('FSAlbert.ttf') format('truetype'),
+		url('FSAlbert.svg#FSAlbert') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}

@@ -1,0 +1,477 @@
+<section class="container_fluid  padding0">
+    <form [formGroup]="caProcessingAddForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                    <h1 class="size18">Add CA Request</h1>
+                    <div class="col-md-12 padding0 ">
+                        <ol class="breadcrumb">
+                            <li>
+                                <a routerLink="/dashboard">Home</a>
+                            </li>
+                            <li class="active">Add CA Request</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div class="catool_widget " id="form_section">
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+                            <p-accordion [multiple]="true" id="inputCriteriaAcc">
+                                <div class="panel panel-default">
+                                    <p-accordionTab header="Input Criteria" [selected]="true" id="inputCriteriaAppTab">
+                                        <table *ngIf="!disabled" class="table text-nowrap table-bordered table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="col-md-3 col-sm-4 col-xs-12">
+                                                        <!-- <label for="userPreferences">Existing User Preferences <span class="astarics" *ngIf="!disabled">*</span></label> -->
+                                                        <!-- <select class="form-control " id="selectbox" formControlName="userPreferences" (change)="onPreferenceChange($event.target.value)">
+                                                            <option value="">Select user preference</option>
+                                                            <option *ngFor="let pre of userPreferencesOption" [value]="pre.value">{{pre.label}}</option>
+                                                        </select> -->
+                                                        <p-dropdown id="searchDDL" formControlName="userPreferences" [options]="userPreferencesOption" [filter]="true" filterBy="label"
+                                                            (onChange)="onPreferenceChange($event.value)" [style]="{'width':'100%', 'height':'40px', 'border-bottom-color':'#d8d8d8'}"
+                                                            styleClass="marginT0">
+                                                        </p-dropdown>
+                                                    </td>
+                                                    <td class="col-md-3 col-sm-4 col-xs-12">
+                                                        <label class="control control--radio" pTooltip="Override tax rate with flat rate" tooltipPosition="top">
+                                                            Tax Rate Override(Flat)
+                                                            <input type="radio" formControlName="taxRate" value="flat">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                        <span *ngIf="isFlat" class="Custom_values marginL10">
+                                                            <input type="text" pInputText pKeyFilter="num" formControlName="flatTaxRate" class="form-control" id="flatTaxRate" (blur)="onChangeFlatTaxRate($event.target.value)">
+                                                            <div *ngIf="caProcessingAddForm.get('flatTaxRate').errors && (caProcessingAddForm.get('flatTaxRate').dirty || caProcessingAddForm.get('flatTaxRate').touched)">
+                                                                <div *ngIf="caProcessingAddForm.get('flatTaxRate').hasError('required')">
+                                                                    <span class="error">Required flat tax rate.</span>
+                                                                </div>
+                                                                <div *ngIf="caProcessingAddForm.get('flatTaxRate').hasError('pattern')">
+                                                                    <span class="error">Flat tax rate should be 0 or between 1-100.</span>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-3 col-sm-4 col-xs-12">
+                                                        <label class="control control--radio" pTooltip="Add tax rate based on country" tooltipPosition="top">
+                                                            Tax Rate Override(Country)
+                                                            <input type="radio" formControlName="taxRate" value="taxRateCountry" (click)="addNewTaxRate($event,op)">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td class="col-md-3 col-sm-4 col-xs-12">
+                                                        <label class="control control--radio" pTooltip="Add default tax rate" tooltipPosition="top">
+                                                            No Override
+                                                            <input type="radio" formControlName="taxRate" value="">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="isVisible">
+                                                    <td class="col-md-12 col-sm-12 col-xs-12" colspan="4">
+                                                        <textarea class="form-control" placeholder="Add Keywords and put comma" formControlName="keywords"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="isVisible">
+                                                    <td class="col-md-3 col-sm-4 col-xs-12">
+                                                        <!-- <label>Upload File <span class="astarics" *ngIf="!disabled">*</span></label> -->
+                                                        <p-fileUpload (onSelect)="onSelect($event)" chooseLabel="Select input data file for processing" multiple="multiple" showUploadButton="false" showCancelButton="false">
+                                                            <ng-template pTemplate="content">
+                                                                <div *ngIf="uploadedFiles">
+                                                                    <div class="ui-fileupload-row" *ngFor="let file of uploadedFiles; let i = index;">
+                                                                        <div class="text_ellipsis">{{file.name}} - {{ formatSize(file.size) }} </div>
+                                                                        <div class="padding0">
+                                                                            <a href="javascript:void(0)" class="color_Evs_blue" (click)="onRemove($event,i)">
+                                                                                <i class="fa fa-window-close" data-toggle="tooltip" data-placement="right" title="Close"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </p-fileUpload>
+                                                    </td>
+                                                    <td class="col-md-3 col-sm-8 col-xs-12">
+                                                        <a href="javascript:void(0)" (click)="onTemplateDownload()" class="bold">
+                                                            <i class="fa fa-download text-primary"></i> Download Template</a>
+                                                    </td>
+                                                    <td class="col-md-6 col-sm-8 col-xs-12" colspan="2">
+                                                        <a href="javascript:void(0)" (click)="onDownloadGuidelines()" class="bold">
+                                                            <i class="fa fa-download text-primary"></i> Download User Guidelines</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table *ngIf="disabled" id="tblInputCriteria" class="table text-nowrap table-bordered table-striped">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="col-md-4 col-sm-4 col-xs-12">
+                                                        <label for="createdDate">Created On</label>
+                                                        <input type="text" class="datepicker form-control datepick_relative" value="{{createdDate}}" disabled>
+                                                    </td>
+                                                    <td class="col-md-4 col-sm-4 col-xs-12">
+                                                        <label for="inputFile">Input File</label>
+                                                        <input type="text" class="form-control" Placeholder="" value="{{inputFile}}" disabled>
+                                                    </td>
+                                                    <td class="col-md-4 col-sm-6 col-xs-12">
+                                                        <label for="keywords">Keyword(s)</label>
+                                                        <textarea class="form-control" rows="1" placeholder="" value="{{keywords}}" style="height: 40px;" disabled></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-md-4 col-sm-6 col-xs-12">
+                                                        <p class="size16">Download Input File -
+                                                            <a href="javascript:void(0)" (click)="onDownload('DownloadInput')" class="bold">Download</a>
+                                                        </p>
+                                                    </td>
+                                                    <td class="col-md-4 col-sm-6 col-xs-12">
+                                                        <p class="size16">Download Output File -
+                                                            <a href="javascript:void(0)" (click)="onDownload('DownloadOutput')" class="bold">Download</a>
+                                                        </p>
+                                                    </td>
+                                                    <td class="col-md-4 col-sm-6 col-xs-12">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </p-accordionTab>
+                                </div>
+                            </p-accordion>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div *ngIf="isVisible" class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+                            <p-accordion [multiple]="true" id="preferenceAcc">
+                                <div class="panel panel-default">
+                                    <p-accordionTab header="Processing Criteria" [selected]="false" id="processingCriteriaAppTab">
+                                        <table class="table text-nowrap table-bordered table-striped">
+                                            <tbody>
+                                                <tr formGroupName="calculationMethodology">
+                                                    <td class="light_blue_bg">
+                                                        <strong>Calculation Methodology</strong>
+                                                    </td>
+                                                    <td *ngFor="let cal of calculationMethodologyOption; let i = index" [attr.colspan]="cal.colspan">
+                                                        <label class="control control--checkbox">
+                                                            {{cal.label}}
+                                                            <input type="checkbox" [formControlName]="cal.name" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr formGroupName="indexType">
+                                                    <td class="light_blue_bg">
+                                                        <strong>Index Type</strong>
+                                                    </td>
+                                                    <td *ngFor="let inType of indexTypeOption; let i = index" [attr.colspan]="inType.colspan">
+                                                        <label class="control control--checkbox">
+                                                            {{inType.label}}
+                                                            <input type="checkbox" [formControlName]="inType.name" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr formGroupName="payDate">
+                                                    <td class="light_blue_bg" style="width:20%">
+                                                        <strong>Pay Date</strong>
+                                                    </td>
+                                                    <td *ngFor="let pay of payDateOption; let i = index" [attr.colspan]="pay.colspan">
+                                                        <label class="control control--checkbox">
+                                                            {{pay.label}}
+                                                            <input type="checkbox" [formControlName]="pay.name" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr class="tax_custom">
+                                                    <td class="light_blue_bg">
+                                                        <strong>WithHolding Tax %</strong>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Custom
+                                                            <input type="radio" formControlName="withHoldingTax" value="custom" class="custom_value" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                        <span *ngIf="isCustom" class="Custom_values">
+                                                            <select class="form-control" formControlName="customValue" style="display:inline;width:50%;margin-left:5px;" disabled>
+                                                                <option value="">Select</option>
+                                                                <option *ngFor="let cus of customOption" [value]="cus.value">{{cus.label}}</option>
+                                                            </select>
+                                                            <div style="padding-left: 75px;" *ngIf="caProcessingAddForm.get('customValue').errors && (caProcessingAddForm.get('customValue').dirty || caProcessingAddForm.get('customValue').touched)">
+                                                                <div *ngIf="caProcessingAddForm.get('customValue').hasError('required')">
+                                                                    <span class="error">Custom is required.</span>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Standard
+                                                            <input type="radio" formControlName="withHoldingTax" value="standard" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td colspan="2">
+                        
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </p-accordionTab>
+                                </div>
+                                <div class="panel panel-default">
+                                    <p-accordionTab header="Output Option" [selected]="false" id="outputCriteriaAppTab">
+                        
+                                        <table class="table text-nowrap table-bordered table-striped ">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="light_blue_bg" style="width:20%">
+                                                        <strong>Email Watchlist</strong>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Yes
+                                                            <input type="radio" formControlName="emailAlerts" value="true" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            No
+                                                            <input type="radio" formControlName="emailAlerts" value="false" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <input type="email" formControlName="email" class="form-control" placeholder="Enter email address" disabled>
+                                                        <div *ngIf="caProcessingAddForm.get('email').errors && (caProcessingAddForm.get('email').dirty || caProcessingAddForm.get('email').touched)">
+                                                            <div *ngIf="caProcessingAddForm.get('email').hasError('required')">
+                                                                <span class="error">Email is required.</span>
+                                                            </div>
+                                                            <div *ngIf="caProcessingAddForm.get('email').hasError('email')">
+                                                                <span class="error">Email must be a valid email address.</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr formGroupName="saveAs">
+                                                    <td class="light_blue_bg">
+                                                        <strong>Format</strong>
+                                                    </td>
+                                                    <td *ngFor="let save of saveAsOption; let i = index" [attr.colspan]="save.colspan">
+                                                        <!-- <label class="control control--checkbox">
+                                                                                    {{save.label}}
+                                                                                    <input type="checkbox" [formControlName]="save.name" disabled>
+                                                                                    <div class="control__indicator"></div>
+                                                                                </label> -->
+                                                        <label class="control control--radio">
+                                                            {{save.label}}
+                                                            <input type="radio" [formControlName]="save.name" value="{{save.value}}" class="custom_value" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <textarea class="form-control" formControlName="comment" rows="4" placeholder="Additional Comments will come here.." value=""></textarea>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                        
+                                    </p-accordionTab>
+                                </div>
+                                <div class="panel panel-default" *ngIf="csvRecords.length > 0">
+                                    <p-accordionTab header="Input Request Sanity Check Summary" [selected]="true" id="sanityCheckAppTab">
+                                        <div id="check-grid">
+                                            <p-table id="tableSanity" #tableSanity [paginator]="true" [rows]="10" [first]="0" [scrollable]="true" scrollHeight="200px"
+                                                [rowsPerPageOptions]="[5,10,20]" [value]="csvRecords" dataKey="rowId">
+                                                <ng-template pTemplate="caption">
+                                                    <div class="col-md-4 col-sm-6 col-xs-12">
+                                                        <label class="error">Sanity Failure : {{error}}</label>
+                                                        <label class="success">Success : {{success}}</label>
+                                                        <label class="total">Total : {{total}}</label>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-6 col-xs-12">
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-6 col-xs-12">
+                                                        <label>
+                                                            <a href="javascript:void(0)" (click)="onDownloadSanity()" class="bold">
+                                                                <i class="fa fa-download text-primary"></i> Download input with sanity failure details(s)</a>
+                                                        </label>
+                                                    </div>
+                                                </ng-template>
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <!-- <th class="width50"></th> -->
+                                                        <th class="width150">Source</th>
+                                                        <th class="width150">ISIN</th>
+                                                        <th class="width150">Country</th>
+                                                        <th class="width150">Identifier</th>
+                                                        <th class="width150">Price Currency</th>
+                                                        <th class="width150">Ex Date</th>
+                                                        <th class="width150">Event Type</th>
+                                                        <th class="width150">Event Name</th>
+                                                        <th class="width150">Event Currency</th>
+                                                        <th class="width150">Event Amount</th>
+                                                        <th class="width150">Offer Price</th>
+                                                        <th class="width150">Terms Old Shares</th>
+                                                        <th class="width150">Terms New Shares</th>
+                                                        <th class="width150">Spun Off Stock</th>
+                                                        <th class="width150">Spun Off Cash</th>
+                                                        <th class="width150">Price (Ex date -1)</th>
+                                                        <th class="width150">FX(Ex date -1)</th>
+                                                        <th class="width150">WHT</th>
+                                                        <th class="width150">Pay Date</th>
+                                                        <th class="width150">Price (Pay Date -1)</th>
+                                                        <th class="width150">Fx(Pay Date-1)</th>
+                                                        <th class="width150">Franking%</th>
+                                                        <th class="width150">For Income%</th>
+                                                        <th class="width150">REIT</th>
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+                                                    <tr class="ui-widget-header" [ngClass]="rowData.sanityStatus?'check_pass':'check_failed'">
+                                                        <!-- <td class="width50">
+                                                            <a href="#" [pRowToggler]="rowData">
+                                                                <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down fa-lg text-primary' : 'fa fa-fw fa-chevron-circle-right fa-lg text-primary'"></i>
+                                                            </a>
+                                                        </td> -->
+                                                        <td class="width150"> {{rowData.source}}</td>
+                                                        <td class="width150"> {{rowData.isin}}</td>
+                                                        <td class="width150"> {{rowData.country}}</td>
+                                                        <td class="width150"> {{rowData.identifier}}</td>
+                                                        <td class="width150"> {{rowData.priceCurrency}}</td>
+                                                        <td class="width150"> {{rowData.exdate}}</td>
+                                                        <td class="width150"> {{rowData.eventType}}</td>
+                                                        <td class="width150"> {{rowData.eventName}}</td>
+                                                        <td class="width150"> {{rowData.eventCurrency}}</td>
+                                                        <td class="width150"> {{rowData.eventamount}}</td>
+                                                        <td class="width150"> {{rowData.offerprice}}</td>
+                                                        <td class="width150"> {{rowData.termoldshares}}</td>
+                                                        <td class="width150"> {{rowData.termnewshares}}</td>
+                                                        <td class="width150"> {{rowData.spunoffstock}}</td>
+                                                        <td class="width150"> {{rowData.spunoffcash}}</td>
+                                                        <td class="width150"> {{rowData.priceExT1}}</td>
+                                                        <td class="width150"> {{rowData.fxexT1}}</td>
+                                                        <td class="width150"> {{rowData.WHTType}}</td>
+                                                        <td class="width150"> {{rowData.paydate}}</td>
+                                                        <td class="width150"> {{rowData.payDatePriceT1}}</td>
+                                                        <td class="width150"> {{rowData.payDateFxT1}}</td>
+                                                        <td class="width150"> {{rowData.frankingPercent}}</td>
+                                                        <td class="width150"> {{rowData.incomePercent}}</td>
+                                                        <td class="width150"> {{rowData.reit}}</td>
+                                                    </tr>
+                                                </ng-template>
+                                                <!-- <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                                                    <tr *ngFor="let row of rowData.sanityData">
+                                                        <td></td>
+                                                        <td class="error">{{row.field}}</td>
+                                                        <td class="error" colspan="23">{{row.msg}}</td>
+                                                    </tr>
+                                                </ng-template> -->
+                                            </p-table>
+                        
+                                            <div class="gap5"></div>
+                                            <div class="col-md-12 Center_text ">
+                                                <span class="bullColor2"></span> Failed &nbsp; &nbsp;
+                                                <span class="bullColor3"></span> Passed&nbsp; &nbsp;
+                                            </div>
+                                            <div class="gap5"></div>
+                                        </div>
+                                    </p-accordionTab>
+                                </div>
+                            </p-accordion>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div *ngIf="csvRecords.length == 0" class="col-md-12 col-sm-12 col-xs-12">
+                            <p-messages [(value)]="sanityMsgs"></p-messages>
+                        </div>
+                        
+                        <div class="col-md-12 col-sm-12 col-xs-12  marginT20" id="check-grid">
+                            <table class="table text-nowrap table-bordered table-striped ">
+                                <tbody>
+                                    <tr >
+                                        <td colspan="5">
+                                            <button *ngIf="!disabled" class="btn btn-primary CA_Tool_Btn marginR20" type="submit" [disabled]="isDisabled()" (click)="onSubmit()">Submit</button>
+                                            <a *ngIf="!disabled" href="javascript:void(0)" class="size16 marginR20" (click)="onReset()">Reset</a>
+                                            <a routerLink="/ca-processing" class="size16">Back</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<p-overlayPanel #op [showCloseIcon]="true" id="opCountryTaxRate">
+    <div class="col-md-12 col-sm-12 col-xs-12 padding0 marginB10">
+        <form [formGroup]="addCountryTaxRateForm">
+        <div class="col-md-5 col-sm-12 col-xs-12">
+            <label for="country">Country</label><span class="error"> *</span>
+            <!-- <select formControlName="country" class="form-control" >
+                <option value="">Select</option>
+                <option *ngFor="let ctry of countryOption" [value]="ctry.value">{{ctry.label}}</option>
+            </select> -->
+            <p-dropdown id="searchDDL" formControlName="country" [options]="countryOption" [filter]="true" filterBy="label"
+                [style]="{'width':'100%', 'height':'40px', 'border-bottom-color':'#d8d8d8'}" styleClass="marginT0">
+            </p-dropdown>
+            <div *ngIf="addCountryTaxRateForm.get('country').errors && (addCountryTaxRateForm.get('country').dirty || addCountryTaxRateForm.get('country').touched)">
+                <!-- <div *ngIf="addCountryTaxRateForm.get('country').hasError('required')">
+                    <span class="error">Country name is required.</span>
+                </div> -->
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12 col-xs-12">
+            <label for="countryTaxRate">Tax Rate</label><span class="error"> *</span>
+            <input type="text" formControlName="countryTaxRate" pInputText pKeyFilter="num" class="form-control">
+            <div *ngIf="addCountryTaxRateForm.get('countryTaxRate').errors && (addCountryTaxRateForm.get('countryTaxRate').dirty || addCountryTaxRateForm.get('countryTaxRate').touched)">
+                <!-- <div *ngIf="addCountryTaxRateForm.get('countryTaxRate').hasError('required')">
+                    <span class="error">Tax rate is required.</span>
+                </div> -->
+                <div *ngIf="addCountryTaxRateForm.get('countryTaxRate').hasError('pattern')">
+                    <span class="error">Tax rate should be 0 or between 1-100.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <button class="btn btn-primary CA_Tool_Btn marginT30" type="button" [disabled]="addCountryTaxRateForm.invalid" (click)="AddTaxRate()">Add</button>
+        </div>
+        </form>
+    </div>
+    <div *ngIf="countryTaxRateList.length > 0" class="col-md-12 col-sm-12 col-xs-12 padding0 marginB10">
+        <p-table id="tblCountryTaxRate" #tblCountryTaxRate [paginator]="false" [rows]="5" [first]="0" [scrollable]="true" scrollHeight="200px"
+            [rowsPerPageOptions]="[5,10,20]" [value]="countryTaxRateList" dataKey="rowId">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="width150">Country</th>
+                    <th class="width150">Tax Rate</th>
+                    <th class="width100">Action</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+                <tr class="ui-widget-header">
+                    <td class="width150">{{rowData.countryName}}</td>
+                    <td class="width150">{{rowData.taxRate}}</td>
+                    <td class="width100">
+                        <a href="javascript:void(0)" (click)="onDelete(rowIndex)" pTooltip="Delete" tooltipPosition="bottom" class="color_Evs_blue">
+                            <i class="fa fa-trash-o fa-lg"></i>
+                        </a>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</p-overlayPanel>

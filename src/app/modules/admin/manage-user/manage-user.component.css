@@ -1,0 +1,8 @@
+#userModal .modal-dialog-600{
+    max-width: 600px !important;
+    width: 600px !important;
+}
+
+#userModal .modal-footer {
+    text-align: left;
+}

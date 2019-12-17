@@ -1,0 +1,8 @@
+#accountModal .modal-dialog-600{
+    max-width: 600px !important;
+    width: 600px !important;
+}
+
+#accountModal .modal-footer {
+    text-align: left;
+}

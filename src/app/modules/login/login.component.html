@@ -1,0 +1,58 @@
+<my-spinner [loading]="loading"></my-spinner>
+<p-growl [life]="growlLife" [(value)]="msgs" [baseZIndex]="1050"></p-growl>
+<main class="container" id="loginMid">
+    <div class="row">
+        <div class="loginWidth">
+            <div class="wrapperLoginForm box">
+                <form [formGroup]="loginForm" class="form-signin animated fadeInUp" (ngSubmit)="onSubmit()">
+                    <h2 class="form-signin-heading">Sign in</h2>
+                    <div>
+                        <div>
+                            <input type="text" formControlName="email" autocomplete="off"/>
+                            <label>Email</label>
+                            <div *ngIf="loginForm.get('email').errors && (loginForm.get('email').dirty || loginForm.get('email').touched)">
+                                <div *ngIf="loginForm.get('email').hasError('required')">
+                                    <span class="error">Email is required.</span>
+                                </div>
+                                <div *ngIf="loginForm.get('email').hasError('email')">
+                                    <span class="error">Email must be a valid email address.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="password" formControlName="password" autocomplete="off"/>
+                            <label>Password</label>
+                            <div *ngIf="loginForm.get('password').errors && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+                                <div *ngIf="loginForm.get('password').hasError('required')">
+                                    <span class="error">Password is required.</span>
+                                </div>
+                                <div *ngIf="loginForm.get('password').hasError('minlength')">
+                                    <span class="error">Password must be at least 8 characters.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gap10"></div>
+                    <label class="checkbox">
+                    <input type="checkbox" value="remember-me" formControlName="rememberMe" style="opacity:1; "> Remember me </label>
+                    <button class="btn btn-lg btn-primary btn-block CA_Tool_Btn" type="submit" [disabled] = "!loginForm.valid">LOG ME IN</button>
+                    <div class="marginT10 text-center">
+                        <span>
+                            <a href="javascript:void(0)" (click)="onRegistration()">
+                                <strong>New User Registration</strong>
+                            </a>
+                        </span>
+                        <span class=" marginL10 marginR10"> | </span>
+                        <span>
+                            <a href="javascript:void(0)">
+                                <strong>Forgot Password ?</strong>
+                            </a>
+                        </span>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>

@@ -1,0 +1,113 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">View Clients </h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">View Clients </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget " id="form_section">
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+                        <my-datatable id="tblClients" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows" [tableName]="tableName"
+                            (valueChange)='onAction($event)'>
+                        </my-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<modal id="clientModal" #myModal [hideCloseButton]="true" [closeOnEscape]="false" [closeOnOutsideClick]="false" [modalClass]="modalCss">
+    <modal-header>
+        <span class="bold size18">{{modalHeader}}</span>
+        <button type="button" (click)="close()" class="close">
+            <i class="fa fa-times-circle"></i>
+        </button>
+    </modal-header>
+
+    <modal-content>
+        <p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+        <form [formGroup]="addClientForm">
+            <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <label>Client Name</label>
+                    <input type="text" formControlName="clientName" class="form-control" Placeholder="">
+                    <div *ngIf="addClientForm.get('clientName').errors && (addClientForm.get('clientName').dirty || addClientForm.get('clientName').touched)">
+                        <div *ngIf="addClientForm.get('clientName').hasError('required')">
+                            <span class="error">Client name is required.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <label>Domain Name</label>
+                    <input type="text" formControlName="domainName" class="form-control" Placeholder="">
+                    <div *ngIf="addClientForm.get('domainName').errors && (addClientForm.get('domainName').dirty || addClientForm.get('domainName').touched)">
+                        <div *ngIf="addClientForm.get('domainName').hasError('required')">
+                            <span class="error">Domain name is required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <label>Subscription Start </label>
+                    <my-date-picker formControlName="subscriptionStart" class="" [options]="myFromDateFormat" (dateChanged)="onDateChanged($event)">
+                    </my-date-picker>
+                    <div *ngIf="addClientForm.get('subscriptionStart').errors && (addClientForm.get('subscriptionStart').dirty || addClientForm.get('subscriptionStart').touched)">
+                        <div *ngIf="addClientForm.get('subscriptionStart').hasError('required')">
+                            <span class="error">Subscription start is required.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <label>Subscription End </label>
+                    <my-date-picker formControlName="subscriptionEnd" class="" [options]="myToDateFormat">
+                    </my-date-picker>
+                    <div *ngIf="addClientForm.get('subscriptionEnd').errors && (addClientForm.get('subscriptionEnd').dirty || addClientForm.get('subscriptionEnd').touched)">
+                        <div *ngIf="addClientForm.get('subscriptionEnd').hasError('required')">
+                            <span class="error">Subscription end is required.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+                <div class="col-md-12 col-sm-6 col-xs-12 ">
+                    <label>Active</label>
+                    <div style="display: flex;">
+                        <label class="control control--radio">
+                            Yes
+                            <input type="radio" formControlName="active" value="true">
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--radio ">
+                            No
+                            <input type="radio" formControlName="active" value="false">
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+    </modal-content>
+    <modal-footer>
+        <button *ngIf="!isReadOnly" [disabled]="!addClientForm.valid" (click)="onSubmit()" class="btn CA_Tool_Small_Btn" type="button">Submit</button>
+        <button class="btn CA_Tool_Small_Btn" (click)="close()">Close</button>
+    </modal-footer>
+</modal>

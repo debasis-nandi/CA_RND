@@ -1,0 +1,115 @@
+<my-spinner [loading]="loading"></my-spinner>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<form [formGroup]="addWhtForm" (ngSubmit)="onSubmit()">
+    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <label style="margin-right: 122px;"> Tax Schedule Name</label>  
+            <p-checkbox label="" (onChange)="onSwitchScheduleName($event)" pTooltip="Select existing tax schedule name" tooltipPosition="right" tooltipZIndex="9999"></p-checkbox>
+            <input type="text" *ngIf="!isExistingTaxScheduleName" formControlName="txtScheduleName" class="form-control" placeholder="">
+            <select *ngIf="isExistingTaxScheduleName" formControlName="txtScheduleName" class="form-control ">
+                <option value="">Select</option>
+                <option *ngFor="let tax of scheduleNameOption" [value]="tax.value">{{tax.label}}</option>
+            </select>
+            <div *ngIf="addWhtForm.get('txtScheduleName').errors && (addWhtForm.get('txtScheduleName').dirty || addWhtForm.get('txtScheduleName').touched)">
+                <div *ngIf="addWhtForm.get('txtScheduleName').hasError('required')">
+                    <span class="error">Tax schedule name is required.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <label> Country</label>
+            <select formControlName="country" class="form-control ">
+                <option value="">Select</option>
+                <option *ngFor="let coun of countryOption" [value]="coun.value">{{coun.label}}</option>
+            </select>
+            <div *ngIf="addWhtForm.get('country').errors && (addWhtForm.get('country').dirty || addWhtForm.get('country').touched)">
+                <div *ngIf="addWhtForm.get('country').hasError('required')">
+                    <span class="error">Country name is required.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <label> Effective From</label>
+            <div class="pos_relative" id="Date_pick_ico">
+                <my-date-picker formControlName="effectiveFrom" class="" [options]="myFromDateFormat" (dateChanged)="onDateChanged($event)">
+                </my-date-picker>
+            </div>
+            <div *ngIf="addWhtForm.get('effectiveFrom').errors && (addWhtForm.get('effectiveFrom').dirty || addWhtForm.get('effectiveFrom').touched)">
+                <div *ngIf="addWhtForm.get('effectiveFrom').hasError('required')">
+                    <span class="error">From date is required.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <label>Effective To</label>
+            <div class="pos_relative" id="Date_pick_ico">
+                <my-date-picker formControlName="effectiveTo" class="" [options]="myToDateFormat">
+                </my-date-picker>
+            </div>
+            <div *ngIf="addWhtForm.get('effectiveTo').errors && (addWhtForm.get('effectiveTo').dirty || addWhtForm.get('effectiveTo').touched)">
+                <div *ngIf="addWhtForm.get('effectiveTo').hasError('required')">
+                    <span class="error">To date is required.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+        <div class="col-md-6 col-sm-6 col-xs-12  ">
+            <label> Tax Rate</label>
+            <input type="text" pInputText pKeyFilter="num" formControlName="taxRate" class="form-control">
+            <div *ngIf="addWhtForm.get('taxRate').errors && (addWhtForm.get('taxRate').dirty || addWhtForm.get('taxRate').touched)">
+                <div *ngIf="addWhtForm.get('taxRate').hasError('required')">
+                    <span class="error">Tax rate is required.</span>
+                </div>
+                <div *ngIf="addWhtForm.get('taxRate').hasError('pattern')">
+                    <span class="error">Tax rate should be 0 or between 1-100.</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <label> WHT Type</label>
+            <select formControlName="whtType" class="form-control ">
+                <option value="">Select</option>
+                <option *ngFor="let wht of whtTypeOption" [value]="wht.value">{{wht.label}}</option>
+            </select>
+            <div *ngIf="addWhtForm.get('whtType').errors && (addWhtForm.get('whtType').dirty || addWhtForm.get('whtType').touched)">
+                <div *ngIf="addWhtForm.get('whtType').hasError('required')">
+                    <span class="error">Tax rate schedule type is required.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 padding0">
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <label> REIT</label>
+            <div style="display: flex;">
+                <label class="control control--radio">
+                    Yes
+                    <input type="radio" formControlName="reit" value="true">
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--radio ">
+                    No
+                    <input type="radio" formControlName="reit" value="false">
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div *ngIf="addWhtForm.get('reit').errors && (addWhtForm.get('reit').dirty || addWhtForm.get('reit').touched)">
+                <div *ngIf="addWhtForm.get('reit').hasError('required')">
+                    <span class="error">REIT flag is required.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12 col-sm-12 col-xs-12  marginT10 padding0">
+        <div class="col-md-6 col-sm-6 col-xs-12 ">
+            <button [disabled]="!addWhtForm.valid" class="btn CA_Tool_Small_Btn" type="submit">Submit</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</form>

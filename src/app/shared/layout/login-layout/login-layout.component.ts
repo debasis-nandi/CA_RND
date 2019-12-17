@@ -1,0 +1,26 @@
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+
+declare var $: any;
+
+@Component({
+  selector: 'app-login-layout',
+  templateUrl: './login-layout.component.html',
+  styleUrls: ['login-layout.component.css']
+})
+export class LoginLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    $('body').addClass('catool');
+  }
+
+  ngOnDestroy() {
+    $('body').removeClass('catool');
+  }
+
+}

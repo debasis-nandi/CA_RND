@@ -1,0 +1,119 @@
+<div class="container marginT10">
+    <section class="Main padding10">
+        <div class="row">
+            <div class="col-md-3 col-xs-12 col-sm-4">
+                <h2 class="main_head"> Download</h2>
+                <div class="catool_widget template_selection">
+                    <p class="size18 bold paddingTop10 paddingL15">Templates & Guidelines</p>
+                    <p-dropdown [options]="templateOption" [(ngModel)]="selectedTemplate" [filter]="true" filterBy="label" styleClass="form-control"
+                        [style]="{'margin-left':'10px', 'width':'225px'}"></p-dropdown>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12 text-center  download_share_icons widget_shareicon_pos">
+                        <div class="pos_relative">
+                            <a href="javascript:void(0)" (click)="onDownload()">
+                                <i class="fa fa-cloud-download paddingRight15 download_share_iconsi" data-toggle="tooltip" data-placement="left" title=""
+                                    data-original-title="Download"></i>
+                            </a>
+                            <!-- <a href="javascript:void(0)" id="pop2">
+                                <i class="fa fa-share-alt-square download_share_iconsi" data-toggle="tooltip" data-placement="right" title="" data-original-title="Share"></i>
+                            </a> -->
+                            <div class="toggleMe1">
+                                <div class="filterBox animated fadeInDown">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+                                        <div class="form-group">
+                                            <select id="Userselect" name="Userselect[]" multiple class="form-control">
+                                                <option value="User1">User 1</option>
+                                                <option value="User2">User 2</option>
+                                                <option value="User3">User 3</option>
+                                                <option value="User4">User 4</option>
+                                                <option value="User5">User 5</option>
+                                                <option value="User6">User 6</option>
+                                                <option value="User7">User 7</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <input type="text" class="form-control" placeholder="Username@email.com " required>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 text-center">
+                                        <button class="btn CA_Tool_Small_Btn" type="submit">Share</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-xs-12 col-sm-8 ">
+                <h2 class="main_head">My Quick Links </h2>
+                <div class="clearfix"></div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 padding0 marginB20">
+                    <div class="col-md-4 col-sm-4 col-xs-12 marginb">
+                        <a routerLink="/ca-processing/ca-processing-add">
+                            <div class="box_new new1 bold">
+                                <img src="src/assets/img/pic1.jpg" class="img-responsive">
+                            </div>
+                            <p>Create CA Request</p>
+                        </a>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <a routerLink="/ca-processing">
+                            <div class="box_new new2  bold">
+                                <img src="src/assets/img/pic2.jpg" class="img-responsive">
+                            </div>
+                            <p>CA Request History</p>
+                        </a>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <a routerLink="/historical-data">
+                            <div class="box_new new4  bold">
+                                <img src="src/assets/img/pic3.jpg" class="img-responsive">
+                            </div>
+                            <p>Historical Data Search</p>
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12 padding0 marginB20 ">
+
+
+                    <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-2 col-sm-offset-2">
+                        <a routerLink="/wht">
+                            <div class="box_new new5 bold">
+                                <img src="src/assets/img/pic4.jpg" class="img-responsive">
+                            </div>
+                            <p>WHT Management</p>
+                        </a>
+                    </div>
+
+
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <a routerLink="/preference">
+                            <div class="box_new new6 bold">
+                                <img src="src/assets/img/pic5.jpg" class="img-responsive"> `
+                            </div>
+                            <p>Preference Management</p>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</div>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>

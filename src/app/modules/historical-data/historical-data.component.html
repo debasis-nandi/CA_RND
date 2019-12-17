@@ -1,0 +1,182 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">Historical Data</h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">Historical Data</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <p-messages [(value)]="msgs"></p-messages>
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget " id="form_section">
+                    <div class="panel panel-default">
+                        <p-accordion [multiple]="true" id="historicalAcc">
+                            <p-accordionTab header="Screening Criteria" [selected]="true" id="screeningCriteriaAppTab" [disabled]="false">
+                                <div class="panel-body" id="form_section_dates">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 padding0">
+                                            <div class="col-md-8 col-sm-8 col-xs-12 ">
+                                                <label>ISIN/Ticker</label>
+                                                <input type="text" name="text" class="form-control " [(ngModel)]="isin" placeholder="">
+                                            </div>
+                                            <div class="col-md-4 col-sm-3 col-xs-12 ">
+                                                <label> Processed Output Preferences</label>
+                                                <!-- <select class="form-control" [(ngModel)]="filter.processedPreference">
+                                                    <option value="">Select Preference</option>
+                                                    <option *ngFor="let pro of processedPreferencesOption" [value]="pro.value">{{pro.label}}</option>
+                                                </select> -->
+                                                <p-dropdown id="searchDDL" [(ngModel)]="filter.processedPreference" [options]="processedPreferencesOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'40px', 'border-bottom-color':'#d8d8d8'}"
+                                                    styleClass="marginT0">
+                                                </p-dropdown>
+
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 padding0">
+                                                <fieldset>
+                                                    <legend>Ex Date</legend>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <label> From</label>
+                                                        <my-date-picker class="" [options]="exFromDateFormat" [(ngModel)]="exFromDate" (dateChanged)="onExDateChanged($event)">
+                                                        </my-date-picker>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <label> To</label>
+                                                        <my-date-picker class="" [options]="exToDateFormat" [(ngModel)]="exToDate">
+                                                        </my-date-picker>
+                                                    </div>
+
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 padding0">
+                                                <fieldset>
+                                                    <legend>Pay Date</legend>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <label> From</label>
+                                                        <my-date-picker class="" [options]="payFromDateFormat" [(ngModel)]="payFromDate" (dateChanged)="onPayDateChanged($event)">
+                                                        </my-date-picker>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <label> To</label>
+                                                        <my-date-picker class="" [options]="payToDateFormat" [(ngModel)]="payToDate">
+                                                        </my-date-picker>
+                                                    </div>
+
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-md-4 col-sm-6 col-xs-12 padding0">
+                                                <fieldset>
+                                                    <legend>Processing Date </legend>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <label> From</label>
+                                                        <my-date-picker class="" [options]="processingFromDateFormat" [(ngModel)]="processingFromDate" (dateChanged)="onProcessingDateChanged($event)">
+                                                        </my-date-picker>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                        <label> To</label>
+                                                        <my-date-picker class="" [options]="processingToDateFormat" [(ngModel)]="processingToDate">
+                                                        </my-date-picker>
+                                                    </div>
+
+                                                </fieldset>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- <div class="col-md-2 col-sm-2 col-xs-12 padding0 marginT10">
+                                        <a href="javascript:void(0)"> </a>
+                                        <button class="btn btn-primary CA_Tool_Btn filter_icon2" type="submit">
+                                            <i class="fa fa-filter  pull-left"></i> Advanced</button>
+                                    </div> -->
+                                    <div class="pos_relative country_filter" style="display:none;">
+                                        <div class="col-md-7 col-sm-7 col-xs-12 panel home_filter_box1 padding0">
+                                            <div class="panel-heading">
+                                                <span class="bold size16">Filter by</span>
+                                                <a href="javascript:void(0)" class="tab_panell_close LH0">
+                                                    <i class="fa fa-times-circle-o"></i>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+                                                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                                    <label>Region</label>
+                                                    <select class="form-control" [(ngModel)]="filter.region">
+                                                        <option value="">Select Region</option>
+                                                        <option *ngFor="let reg of regionOption" [value]="reg.value">{{reg.label}}</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                                    <label>Stock Currency</label>
+                                                    <select class="form-control" [(ngModel)]="filter.stockCurrency">
+                                                        <option value="">Select Currency</option>
+                                                        <option *ngFor="let sto of stockCurrencyOption" [value]="sto.value">{{sto.label}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                                                    <label>Country of Incorporation</label>
+                                                    <select class="form-control" [(ngModel)]="filter.country">
+                                                        <option value="">Select Country</option>
+                                                        <option *ngFor="let cou of countryOption" [value]="cou.value">{{cou.label}}</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="col-md-12 col-sm-12 col-xs-12 marginT20 Center_text paddingBottom10">
+                                                    <button class="btn CA_Tool_Small_Btn" type="button" (click)="onSearch()">Search</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </p-accordionTab>
+
+                        </p-accordion>
+
+                    </div>
+                    
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT10 ">
+                        <table class="table text-nowrap table-bordered table-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="col-md-12 col-sm-12 col-xs-12">
+                                        <button class="btn btn-primary CA_Tool_Btn" type="button" (click)="onSearch()">Search</button>
+                                        <a href="javascript:void(0)" (click)="reSet()" class="size18 marginL20">Reset</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-12 col-sm-12 col-xs-12">
+                                        <p class="size16">Download Output File -
+                                            <a *ngIf="fileid" href="javascript:void(0)" class="bold" (click)="onDownload()">Download</a>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<!-- <p-growl [life]="growlLife" [(value)]="msgs"></p-growl> -->

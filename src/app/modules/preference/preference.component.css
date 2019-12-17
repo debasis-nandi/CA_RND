@@ -1,0 +1,15 @@
+
+#preferenceAcc .ui-accordion .ui-accordion-header{ border: 0px !important; }
+#preferenceAcc .ui-accordion .ui-accordion-header.ui-state-active{ background: #f6f7f9 !important; }
+
+a.disabled {
+    color: gray;
+    cursor: not-allowed;
+    background:none;
+}
+
+#flatValue{
+    display: inline;
+    margin-left: 10px;
+    width: 50%;
+}
