@@ -38,6 +38,7 @@ export class DataTableComponent implements OnInit {
     isAddButton: boolean = false;
     isPreferenceFilter: boolean = false;
     isRequestFilter: boolean = false;
+    isDownloadAll: boolean = false;
     
     preferenceFilter: IPreferenceFilter = { profileName: '', caltype: '', indextype: '', whttype: '' };
     requestFilter: IRequestFilter = { preference: '', filename: '', keywords: '', fromDate: '', toDate: '', outputfrom: '', outputto: '' };
@@ -57,6 +58,7 @@ export class DataTableComponent implements OnInit {
             this.isAddButton = (this.tableName == TableName.preferences || this.tableName == TableName.caProcessing || this.tableName == TableName.manageClient || this.tableName == TableName.manageAccount || this.tableName == TableName.manageResource) ? true : false;
             this.isPreferenceFilter = (this.tableName == TableName.preferences) ? true : false;
             this.isRequestFilter = (this.tableName == TableName.caProcessing) ? true : false;
+            this.isDownloadAll = (this.tableName == TableName.caProcessingOutput) ? true : false;
         }
     }
 
@@ -125,7 +127,10 @@ export class DataTableComponent implements OnInit {
             let emited: any = { action: Action.view, data: row };
             this.valueChange.emit(emited);
         }
-        else{
+        else if(this.tableName == TableName.caProcessing){
+            this.router.navigate([routeLink, field, 'read']);
+        }
+        else {
             this.router.navigate([routeLink, field]);
         }
     }
@@ -136,6 +141,12 @@ export class DataTableComponent implements OnInit {
 
     onDelete(id: any) {
         this.valueChange.emit(id);
+    }
+
+    onDownloadAll(): void{
+        if(this.tableName == TableName.caProcessingOutput){
+            this.valueChange.emit(true);
+        }
     }
 
     onAddNew(): void {

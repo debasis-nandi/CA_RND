@@ -23,13 +23,18 @@
                 <a *ngIf="isAddButton" href="javascript:void(0)" (click)="onAddNew()" class="pull-right btn CA_Tool_Btn marginL10">
                     <i class="fa fa-plus"></i> Add New</a>
             </div>
+            <div id="download" class="col-md-8 col-sm-8 col-xs-12 pull-right padding0" style="text-align: right">
+                <a *ngIf="isDownloadAll" href="javascript:void(0)" (click)="onDownloadAll()" class="pull-right color_Evs_blue marginT10" pTooltip="Download Output"
+                    tooltipPosition="bottom">
+                    <i class="fa fa-cloud-download fa-lg marginR5"></i>Download</a>
+            </div>
         </div>
         <div *ngIf="isPreferenceFilter" id="filterSection" class="col-md-12 col-sm-12 col-xs-12 padding0 tax_filters_sec withholding_filters_pos">
                 
             <div class="col-md-3 col-sm-3 col-xs-12 ">
                 <label>Preference Name</label>
                 <p-dropdown id="searchDDL" [options]="preferenceOption" [(ngModel)]="preferenceFilter.profileName" [filter]="true" filterBy="label" 
-                    [style]="{'width':'100%', 'height':'30px'}" styleClass="marginT0">
+                    [style]="{'width':'100%', 'height':'34px'}" styleClass="marginT0">
                 </p-dropdown>
             </div>
             
@@ -57,7 +62,7 @@
                 </select>
             </div>
             
-            <div class="col-md-1 col-sm-3 col-xs-12 marginT25 paddingL10">
+            <div class="col-md-1 col-sm-3 col-xs-12 marginT15 paddingL10">
                 <button id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left" type="submit" (click)="onSearch()" >Apply Filter</button>
             </div>
             
@@ -97,7 +102,7 @@
                 </div>
             </div>
         
-            <div class="col-md-1 col-sm-3 col-xs-12 marginT25 paddingL10">
+            <div class="col-md-1 col-sm-3 col-xs-12 marginT20 paddingL10">
                 <button id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left" type="submit" (click)="onSearch()">Apply Filter</button>
             </div>
         

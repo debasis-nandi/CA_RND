@@ -36,11 +36,13 @@ export enum TableName {
     preferences = "preferences",
     wht = "wht",
     caProcessing = "caProcessing",
+    caUnProcessing = "caUnProcessing",
     caProcessingDashboard = "caProcessingDashboard",
     manageAccount = "manageAccount",
     manageClient = "manageClient",
     manageUser = "manageUser",
-    manageResource = "manageResource"
+    manageResource = "manageResource",
+    caProcessingOutput = "caProcessingOutput"
 }
 
 export enum DocType{
@@ -72,4 +74,44 @@ export enum EventType {
     rightsIssue = "Rights Issue",
     spinOff = "Spin Off",
     stockSplit = "Stock Split"
+}
+
+export enum SanityLevel {
+    level1 = 'Level1',
+    level2 = 'Level2',
+    level3 = 'Level3'
+}
+
+export enum SanityGroup{
+    mandatory = 'Mandatory',
+    dateFormat = 'DateFormat',
+    invalidData = 'InvalidData',
+    duplicate = 'Duplicate'
+}
+
+export enum SanityFields{
+    source = 'source',
+    isin = 'isin',
+    country = 'country',
+    identifier = 'identifier',
+    priceCurrency = 'priceCurrency',
+    exdate = 'exdate',
+    eventType = 'eventType',
+    eventName = 'eventName',
+    eventCurrency = 'eventCurrency',
+    eventamount = 'eventamount',
+    offerprice = 'offerprice',
+    termoldshares = 'termoldshares',
+    termnewshares = 'termnewshares',
+    spunoffstock = 'spunoffstock',
+    spunoffcash = 'spunoffcash',
+    priceExT1 = 'priceExT1',
+    fxexT1 = 'fxexT1',
+    paydate = 'paydate',
+    payDatePriceT1 = 'payDatePriceT1',
+    payDateFxT1 = 'payDateFxT1',
+    frankingPercent = 'frankingPercent',
+    incomePercent = 'incomePercent',
+    reit = 'reit',
+    duplicate= 'duplicate'
 }

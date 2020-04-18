@@ -26,7 +26,7 @@ textarea{resize:vertical}
 .slider.slider-horizontal .slider-track+.tooltip{z-index: 1039!important}
 .fLeft{float:left}
 .fRight{float:right}
-.fnone{float:none}
+.fnone{float:none !important}
 section {
 	padding:30px 0;
 }
@@ -259,6 +259,9 @@ b, strong,h1, h2, h3,h4, h5, h6,.bold, th,.header-nav li,.stepper-step-isValid,.
 .paddingTop20 {
 	padding-top:20px;
 }
+.paddingT5{
+    padding-top: 5px;
+}
 .paddingL0 {
 	padding-left:0 !important
 }
@@ -435,6 +438,9 @@ label.label-normal {
 }
 .marginB20 {
 	margin-bottom:20px;
+}
+.marginB15 {
+	margin-bottom:15px;
 }
 .marginB10 {
 	margin-bottom: 10px;
@@ -3154,7 +3160,7 @@ input[type=checkbox], input[type=radio] {
     border-top: 1px solid #e0e6ec;
     margin: 10px 0px;
     background: #f0f2f3;
-    padding: 0px 0px 5px 0px !important;
+    padding: 5px 0px 5px 0 !important;
 }	
 
 
@@ -3192,6 +3198,7 @@ legend{
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
   font-size:12px;
 }
+
 
 ::placeholder {
   font-size:12px;
@@ -3254,8 +3261,8 @@ legend{
 
 .error{
     color: #ed193a;
-    font-family: "FSAlbert-Bold";
-    font-size: 14px;
+    font-family: "FS Albert";   
+    font-size: 12px;
 }
 .success{
     color: #90EE90;
@@ -3282,9 +3289,18 @@ legend{
 .width50{ width: 50px; }
 .width80{ width: 80px; }
 .width100{ width: 100px; }
+.width110{ width: 110px; }
+.width120{ width: 120px; }
+.width130{ width: 130px; }
 .width150{ width: 150px; }
 .width200{ width: 200px; }
 .width250{ width: 250px; }
+
+.height34{ height: 34px; }
+.height36{ height: 36px; }
+.height38{ height: 38px; }
+.height40{ height: 40px; }
+.height47{ height: 47px; }
 
 .astarics{ color: #ed193a; }
 
@@ -3292,4 +3308,122 @@ legend{
 
 .color_Evs_blue{
     color: #337ab7 !important;
+}
+
+
+/* PP 03 March 2020 */
+
+.table>thead>tr>th.noBG, .table>tbody>tr.noBG {
+    background-color: #fff;
+    border-bottom: none;
+    text-transform: none;
+    line-height: 1;
+}
+
+.font-normal{
+	font-weight: normal;
+}
+
+.table>tbody>tr.noBG>td {
+    padding: 0;
+}
+
+.input-height {
+    height: 100px;
+}
+
+
+.box-height-auto{
+	display: inline-block;
+}
+
+.marginL20{
+	margin-left: 20px; 
+}
+
+#override_country {
+    border: 1px solid #d8d8d8;
+    padding: 15px 5px;
+    border-radius: 5px;
+}
+
+.hide_it {
+  display: none;
+}
+
+#override_flat input.form-control {
+    width: 25%;
+    float: right;
+    margin-right: 8%;
+}
+
+.minHeight50{
+	min-height: 50px
+}
+
+.result_text i {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.full_box2 {
+    display: inline-block;
+    width: 100%;
+}
+
+.padding_left_right{
+	padding: 0 15px;
+}
+
+.sanity_faliure_input{
+	    font-size: 12px;
+}
+
+.float-right{
+	float: right;
+}
+
+.success-color{
+	color: green;
+}
+
+.error-color{
+	color: red;
+}
+
+.warning-color{
+    color: orange;
+}
+
+.light-grey-color{
+	color: grey;
+}
+.minHeight140{
+    min-height: 140px
+}
+.minHeight272{
+    min-height:272px
+}
+@media (min-width: 768px)
+{
+.form-inline .form-group.taxRateOverride {
+    vertical-align: top
+}
+}
+
+#searchDDL label{
+    font-size: 13px;
+    text-align: left;
+    line-height: 25px;
+    padding-left: 4px;
+}
+.viewReq .ui-tabview {
+    padding: 0
+}
+.viewReq .ui-tabview .ui-tabview-panel {
+    padding: 1em 0
+}
+.viewReq .ui-tabview.ui-tabview-top>.ui-tabview-nav {
+    padding: 0;
+    border-bottom: 1px solid #d6d6d6;
 }

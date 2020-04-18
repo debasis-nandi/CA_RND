@@ -1,2 +1,4 @@
-<ng4-loading-spinner id="spinner" [timeout]="300000">
+<ng4-loading-spinner *ngIf="loaderType == 'default'" id="spinner" [timeout]="300000">
+</ng4-loading-spinner>
+<ng4-loading-spinner *ngIf="loaderType == 'custom'" id="spinner" [timeout]="300000" [template]="template" [loadingText]="'Please wait...'" [zIndex]="9999">
 </ng4-loading-spinner>

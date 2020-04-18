@@ -305,7 +305,7 @@
                                     </p-accordionTab>
                                 </div>
                                 <div class="panel panel-default">
-                                    <p-accordionTab header="Output Option" [selected]="false" id="outputCriteriaAppTab">
+                                    <p-accordionTab header="Output Option" [selected]="true" id="outputCriteriaAppTab">
 
                                         <table class="table text-nowrap table-bordered table-striped ">
                                             <tbody>
@@ -344,11 +344,6 @@
                                                         <strong>Format</strong>
                                                     </td>
                                                     <td *ngFor="let save of saveAsOption; let i = index" [attr.colspan]="save.colspan">
-                                                        <!-- <label class="control control--checkbox">
-                                                                                        {{save.label}}
-                                                                                        <input type="checkbox" [formControlName]="save.name" disabled>
-                                                                                        <div class="control__indicator"></div>
-                                                                                    </label> -->
                                                         <label class="control control--radio">
                                                             {{save.label}}
                                                             <input type="radio" [formControlName]="save.name" value="{{save.value}}" class="custom_value" disabled>
@@ -366,7 +361,27 @@
 
                                     </p-accordionTab>
                                 </div>
-
+                            </p-accordion>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0" *ngIf="sanityGroupList.length > 0">
+                            <p-accordion [multiple]="true" id="masterSanityAcc">
+                                <div class="panel panel-default" formGroupName="masterSanity">
+                                    <p-accordionTab header="Master Sanity" [selected]="true" id="masterSanityAppTab">
+                                        <div *ngFor="let sanity of sanityGroupList; let i = index" class="panel panel-default box-panel">
+                                            <div class="panel-heading">{{sanity.group}}</div>
+                                            <div class="panel-body">
+                                                <ng-container *ngFor="let item of sanity.child; let i = index">
+                                                    <label class="control control--checkbox">
+                                                        {{item.name}}
+                                                        <input type="checkbox" [formControlName]="item.id" (change)="onChange(item, $event.target.checked)">
+                                                        <div class="control__indicator"></div>
+                                                    </label>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </p-accordionTab>
+                                </div>
                             </p-accordion>
                         </div>
                         <div class="clearfix"></div>
@@ -483,7 +498,8 @@
                                 <tbody>
                                     <tr>
                                         <td colspan="5">
-                                            <button *ngIf="!disabled" class="btn btn-primary CA_Tool_Btn marginR20" type="submit" [disabled]="isDisabled()" (click)="onSubmit()">Submit</button>
+                                            <!-- <button *ngIf="!disabled" class="btn btn-primary CA_Tool_Btn marginR20" type="submit" [disabled]="isDisabled()" (click)="onSubmit()">Submit</button> -->
+                                            <button class="btn btn-primary CA_Tool_Btn marginR20" type="submit" (click)="onSubmit()">Submit</button>
                                             <a *ngIf="!disabled" href="javascript:void(0)" class="size16 marginR20" (click)="onReset()">Reset</a>
                                             <a routerLink="/ca-processing" class="size16">Back</a>
                                         </td>

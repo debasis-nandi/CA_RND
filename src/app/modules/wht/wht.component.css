@@ -61,7 +61,6 @@
 #tableWht #filterSection label{ 
     font-weight: 700;
     float: left;
-    margin-top: 10px;
 }
 
 
@@ -95,10 +94,6 @@
 }
 
 #searchDDL label{
-    margin-top: 5px !important;
-    text-align: left;
-}
-#searchDDL2 label{
-    margin-top: 8px !important;
-    text-align: left;
+    line-height: 30px;
+    font-weight: unset !important;
 }

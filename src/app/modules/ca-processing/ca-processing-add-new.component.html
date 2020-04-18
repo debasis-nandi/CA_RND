@@ -1,0 +1,407 @@
+<div class="container marginT10">
+
+    <section class="Main padding0">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">Add CA Request</h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">Input Settings</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form [formGroup]="caProcessingAddForm">
+                <div class="col-md-7 col-xs-12 col-sm-8">
+
+                    <h2 class="main_head">Input Criteria</h2>
+                    <div class="catool_widget fnone template_selection padding20 paddingL0 box-height-auto">
+                        <div id="userprofile_select">
+                            <div class="col-md-6 col-sm-6 col-xs-12  user_finder_select">
+                                <div class="form-group">
+                                    <label for="selectbox">User Preference</label>
+                                    <p-dropdown id="searchDDL" formControlName="userPreferences" [options]="userPreferencesOption" [filter]="true" filterBy="label"
+                                        (onChange)="onPreferenceChange($event.value)" [style]="{'width':'98%', 'height':'34px', 'border-bottom-color':'#d8d8d8'}"
+                                        styleClass="marginT0">
+                                    </p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+
+                            <div id="userprofile_select">
+                                <div class="col-md-12 col-sm-12 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <label for="selectbox">Tax Rate Override</label>
+
+                                        <table class="table text-nowrap table-striped">
+
+                                            <tbody>
+
+                                                <tr class="tax_custom noBG">
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            No Override
+                                                            <input type="radio" formControlName="taxRate" value="" checked="checked">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <label class="control control--radio">
+                                                            Tax Rate Override (By Country)
+                                                            <input type="radio" formControlName="taxRate" value="taxRateCountry">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <label class="control control--radio">
+                                                            Tax Rate Override (Flat)
+                                                            <input type="radio" formControlName="taxRate" value="flat">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                        <!--on override by country-->
+                                        <div *ngIf="isTaxRateByCountry" id="override_country">
+
+                                            <div>
+
+                                                <div id="ca_requests_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div id="" class="dataTables_filter1">
+                                                                <div class="form-group taxRateOverride">
+                                                                    <p-dropdown id="searchDDL" formControlName="country" [options]="countryOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'34px', 'width':'210px', 'border-bottom-color':'#d8d8d8'}"
+                                                                        styleClass="marginT0">
+                                                                    </p-dropdown>
+                                                                </div>
+                                                                <div class="form-group marginL20">
+                                                                    <input type="text" formControlName="countryTaxRate" pInputText pKeyFilter="num" class="form-control" placeholder="Enter a tax rate" style="height:34px;">
+                                                                    <div *ngIf="caProcessingAddForm.get('countryTaxRate').errors && (caProcessingAddForm.get('countryTaxRate').dirty || caProcessingAddForm.get('countryTaxRate').touched)">
+                                                                        <div *ngIf="caProcessingAddForm.get('countryTaxRate').hasError('pattern')">
+                                                                            <span class="error">Between 0-100.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <button class="btn btn-primary CA_Tool_Btn marginL20" type="button" [disabled]="isDisabledOverrideOnCountry()" (click)="AddCountryTaxRate()" style="vertical-align:top;">Add Override</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" *ngIf="countryTaxRateList.length > 0">
+                                                        <div class="col-sm-12">
+                                                            <div class="dataTables_scroll">
+                                                                <div class="gap5"></div>
+                                                                <p-table id="tblCountryTaxRate" #tblCountryTaxRate [paginator]="false" [rows]="5" [first]="0" [scrollable]="true" scrollHeight="125px"
+                                                                    [rowsPerPageOptions]="[5,10,20]" [value]="countryTaxRateList" dataKey="rowId">
+                                                                    <ng-template pTemplate="header">
+                                                                        <tr>
+                                                                            <th class="width150">Country</th>
+                                                                            <th class="width150">Tax Rate</th>
+                                                                            <th class="width100">Action</th>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+                                                                        <tr class="ui-widget-header">
+                                                                            <td class="width150">{{rowData.countryName}}</td>
+                                                                            <td class="width150">{{rowData.taxRate}}</td>
+                                                                            <td class="width100">
+                                                                                <a href="javascript:void(0)" (click)="onDelete(rowIndex)" pTooltip="Delete" tooltipPosition="bottom" class="color_Evs_blue">
+                                                                                    <i class="fa fa-trash-o fa-lg"></i>
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ng-template>
+                                                                </p-table>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!--on override by country-->
+
+                                        <!--on override flat-->
+                                        <div *ngIf="isFlat" id="override_flat">
+                                            <input type="text" pInputText pKeyFilter="num" formControlName="flatTaxRate" class="form-control" placeholder="Between 0-100">
+                                            <div *ngIf="caProcessingAddForm.get('flatTaxRate').errors && (caProcessingAddForm.get('flatTaxRate').dirty || caProcessingAddForm.get('flatTaxRate').touched)">
+                                                <div *ngIf="caProcessingAddForm.get('flatTaxRate').hasError('required')">
+                                                    <span class="error" style="float: right; padding: 11px">Required tax rate</span>
+                                                </div>
+                                                <div *ngIf="caProcessingAddForm.get('flatTaxRate').hasError('pattern')">
+                                                    <span class="error" style="float: right; padding: 11px">Between 0-100</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--on override flat-->
+
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+
+                            <div id="userprofile_select">
+                                <div class="col-md-12 col-sm-12 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <label for="selectbox">Add Keywords
+                                            <span class="font-normal">(optional)</span>
+                                        </label>
+                                        <textarea class="form-control" placeholder="Type in Keywords, separated by comma..." formControlName="keywords" cols="150"></textarea>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="full_box" *ngIf="masterSanity.length > 0">
+                        <h2 class="main_head marginT10">Sanities Criteria</h2>
+                        <div class="catool_widget fnone padding20 paddingL0 box-height-auto">
+                            <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+
+                                <div id="userprofile_select">
+                                    <ng-container *ngFor="let item of masterSanity">
+                                        <div class="col-md-4 col-sm-6 col-xs-12  user_finder_select">
+                                            <div class="form-group">
+                                                <label for="selectbox">{{item.sanityDisplayLabel}}</label>
+                                                <!-- Add master sanity -->
+                                                <div class="marginT15" *ngIf="item.sanityItems.length > 0">
+                                                    <ng-container *ngFor="let i of item.sanityItems">
+                                                        <label class="control control--checkbox">
+                                                            {{i.groupLabel}} <a href="javascript:void(0);" style="margin-left: 5px;" [pTooltip]="i.groupDescription" tooltipPosition="bottom"><i class="fa fa-question-circle-o fa-lg text-primary"></i></a>
+                                                            <input type="checkbox" [name]="i.groupName" checked="checked" disabled>
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                    </ng-container>
+                                                </div>
+                                                <!-- Add soft sanity -->
+                                                <div *ngIf="level2SoftSanity.length > 0 && item.sanityCode == 'Level2'">
+                                                    <ng-container *ngFor="let i of level2SoftSanity">
+                                                        <label class="control control--checkbox">
+                                                            <span style="font-weight:700">{{i.label}}</span><a href="javascript:void(0);" style="margin-left: 5px;" [pTooltip]="i.description" tooltipPosition="bottom"><i class="fa fa-question-circle-o fa-lg text-primary"></i></a>
+                                                            <input type="checkbox" [name]="i.id" [checked]="i.value" (change)="onChangeSoftSanity(i, $event)" [disabled]="disabled">
+                                                            <div class="control__indicator"></div>
+                                                        </label>
+                                                        <input type="text" *ngIf="i.isVisibleThreshold" placeholder="Add numeric value" [value]="i.threshold" pInputText pKeyFilter="num" (change)="onChangeSoftSanityThreshold(i,$event)" class="form-control" [disabled]="disabled">
+                                                    </ng-container>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="full_box">
+                        <h2 class="main_head marginT15">Input File Upload</h2>
+
+                        <div class="catool_widget fnone padding20 paddingL0 box-height-auto minHeight140">
+
+                            <div class="col-md-8 col-sm-7 col-xs-12">
+                                <div *ngIf="!disabled">
+                                    <p-fileUpload (onSelect)="onSelect($event)" chooseLabel="Select input data file for processing" multiple="multiple" showUploadButton="false"
+                                        showCancelButton="false">
+                                        <ng-template pTemplate="content">
+                                            <div *ngIf="uploadedFiles">
+                                                <div class="ui-fileupload-row" *ngFor="let file of uploadedFiles; let i = index;">
+                                                    <div class="text_ellipsis">{{file.name}} - {{ formatSize(file.size) }} </div>
+                                                    <div class="padding0">
+                                                        <a href="javascript:void(0)" class="color_Evs_blue" (click)="onRemove($event,i)">
+                                                            <i class="fa fa-window-close" data-toggle="tooltip" data-placement="right" title="Close"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                                <div *ngIf="disabled">
+                                    <a href="javascript:void(0)" (click)="onDownload('DownloadInput')">
+                                        <i class="fa fa-cloud-download padding10" pTooltip="Download" tooltipPosition="right"></i>Input File</a><br/>
+                                    <a href="javascript:void(0)" (click)="onDownload('DownloadOutput')">
+                                        <i class="fa fa-cloud-download padding10" pTooltip="Download" tooltipPosition="right"></i>Output File</a>
+                                </div>
+
+                                <div class="marginT20">
+                                    <button type="button" *ngIf="!disabled" [disabled]="!isValidForm()" (click)="onSanity()" class="btn btn-primary CA_Tool_Btn widthfull">Begin Sanity Check</button>
+                                    <button type="button" *ngIf="disabled" class="btn btn-primary CA_Tool_Btn widthfull" (click)="onBack()">Back</button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-5 col-xs-12">
+                                <div>
+                                    <a href="javascript:void(0)" (click)="onTemplateDownload()">
+                                        <i class="fa fa-cloud-download padding10" data-toggle="tooltip" data-placement="left" pTooltip="Download" tooltipPosition="left"
+                                            title="" data-original-title="Download"></i>Input File Template</a>
+                                </div>
+                                <div>
+                                    <a href="javascript:void(0)" (click)="onDownloadGuidelines()">
+                                        <i class="fa fa-cloud-download padding10" data-toggle="tooltip" data-placement="left" pTooltip="Download" tooltipPosition="left"
+                                            title="" data-original-title="Download"></i>User Guidelines</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isVisible" class="col-md-5 col-xs-12 col-sm-4">
+                    <div class="full_box">
+                        <h2 class="main_head">Processing Criteria</h2>
+                        <div class="catool_widget fnone template_selection padding10 minHeight272">
+                            <div style="width:50%; float: left;">
+                                <table class="table" formArrayName="calMethodology">
+                                    <thead>
+                                        <tr>
+                                            <th class="noBG">Calculation Methodology</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="this.caProcessingAddForm.controls['calMethodology'].value">
+                                            <tr *ngFor="let item of this.caProcessingAddForm.controls['calMethodology'].value; let i = index">
+                                                <td> {{calMethodology(item)}} </td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-container *ngIf="!this.caProcessingAddForm.controls['calMethodology'].value">
+                                            <tr><td>(N/A)</td></tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <table class="table" formArrayName="payDate">
+                                    <thead>
+                                        <tr>
+                                            <th class="noBG">Pay Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="this.caProcessingAddForm.controls['payDate'].value">
+                                            <tr *ngFor="let item of this.caProcessingAddForm.controls['payDate'].value; let i = index">
+                                                <td>{{payDate(item)}}</td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-container *ngIf="!this.caProcessingAddForm.controls['payDate'].value">
+                                            <tr><td>(N/A)</td></tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width:50%; float: left;">
+                                <table class="table" formArrayName="indexType">
+                                    <thead>
+                                        <tr>
+                                            <th class="noBG">Index Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="this.caProcessingAddForm.controls['indexType'].value">
+                                            <tr *ngFor="let item of this.caProcessingAddForm.controls['indexType'].value; let i = index">
+                                                <td>{{indexType(item)}}</td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-container *ngIf="!this.caProcessingAddForm.controls['indexType'].value">
+                                            <tr><td>(N/A)</td></tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="noBG">WithHolding Tax %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td *ngIf="this.caProcessingAddForm.controls['withHoldingTax'].value == 'standard'">
+                                                Standard
+                                            </td>
+                                            <td *ngIf="this.caProcessingAddForm.controls['withHoldingTax'].value == 'custom'">
+                                                Custom
+                                            </td>
+                                            <td *ngIf="!this.caProcessingAddForm.controls['withHoldingTax'].value">(N/A)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="full_box">
+                        <h2 class="main_head marginT15">Output Option</h2>
+                        <div class="catool_widget fnone template_selection padding10">
+                            <div style="width:50%; float: left;">
+                                <table class="table" formArrayName="saveAs">
+                                    <thead>
+                                        <tr>
+                                            <th class="noBG">Output Format</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngIf="this.caProcessingAddForm.controls['saveAs'].value">
+                                            <tr *ngFor="let item of this.caProcessingAddForm.controls['saveAs'].value; let i = index">
+                                                <td>{{saveAs(item)}}</td>
+                                            </tr>
+                                        </ng-container>
+                                        <ng-container *ngIf="!this.caProcessingAddForm.controls['saveAs'].value">
+                                            <tr>
+                                                <td>(N/A)</td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div style="width:50%; float: left;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="noBG">Email Watchlist</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td *ngIf="this.caProcessingAddForm.controls['email'].value">
+                                                <div *ngFor="let item of eMails(this.caProcessingAddForm.controls['email'].value)">{{item}}</div>
+                                            </td>
+                                            <td *ngIf="!this.caProcessingAddForm.controls['email'].value">(N/A)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="gap5"></div>
+                            <textarea class="form-control" formControlName="comment" rows="4" placeholder="Add comments here..."></textarea>
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+        </div>
+    </section>
+</div>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<my-spinner [loading]="loading"></my-spinner>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>

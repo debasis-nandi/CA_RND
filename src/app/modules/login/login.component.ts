@@ -45,11 +45,14 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
             this.user = { email: this.loginForm.value.email, password: this.loginForm.value.password };
             this.service.post(ApiConfig.getTokenApi, this.user)
                 .subscribe(response => {
-                    if (response) {
+                    if (response.result == undefined) {
                         this.token = response.token;
                         AppSession.setSessionStorage("token", this.token);
                         this.getUserInfo();
-                        //this.loading = false;
+                    }
+                    else{
+                        this.showError(response.message);
+                        this.loading = false;
                     }
                 }, err => {
                     console.log(err);

@@ -22,10 +22,10 @@ export class CAProcessingComponent implements OnInit {
     msgs: any[] = [];
     growlLife: number = GlobalConst.growlLife;
 
-    tableName: string = TableName.caProcessing;
+    tableName: string;
     tableConfig:ITableConfig = { table: null, columns: [], rows: [] };
+    
     preferenceOption: any[] = [];
-
     filterModel: IRequestFilter = {};
 
     constructor(private fb:FormBuilder, private router: Router, private service: HttpService) {
@@ -37,6 +37,8 @@ export class CAProcessingComponent implements OnInit {
     }
 
     getConfig() {
+        this.tableName = TableName.caProcessing;
+        this.reSetTable();
         let api: string = 'src/assets/tableconfig/ca-processing.json';
         this.service.getConfig(api).subscribe(data => {
             if (data) {
@@ -49,6 +51,22 @@ export class CAProcessingComponent implements OnInit {
         });
     }
 
+    getUnConfig() {
+        this.tableName = TableName.caUnProcessing;
+        this.reSetTable();
+        let api: string = 'src/assets/tableconfig/ca-unprocessing.json';
+        this.service.getConfig(api).subscribe(data => {
+            if (data) {
+                this.tableConfig.table = data.table;
+                this.tableConfig.columns = data.columns;
+                //this.tableConfig.rows = data.rows;
+                this.getUnData();
+            }
+        }, error => {
+        });
+    }
+
+
     getData() {
         this.loading = true;
         this.service.post(ApiConfig.caProcessingApi, this.filterModel).subscribe(res => {
@@ -59,6 +77,26 @@ export class CAProcessingComponent implements OnInit {
             this.loading = false;
             console.log(error);
         });
+    }
+
+    getUnData() {
+        this.loading = true;
+        this.service.get(ApiConfig.caUnProcessingApi).subscribe(res => {
+            this.tableConfig.rows = res.result ? res.results : [];
+            this.loading = false;
+        }, error => {
+            this.loading = false;
+            console.log(error);
+        });
+    }
+
+    onTabChange(event){
+        if(event.index == 0){
+            this.getConfig();
+        }
+        if(event.index == 1){
+            this.getUnConfig();
+        }
     }
 
     mapActions(rows: any[]): any{
@@ -98,14 +136,14 @@ export class CAProcessingComponent implements OnInit {
                 console.log(error);
             });
         }
-        if(event.action == Action.search){
+        if (event.action == Action.search) {
             let filterData: any = event.data;
             this.filterModel = {
-                preference: filterData.preference ? filterData.preference: null,
-                keywords: filterData.keywords ? filterData.keywords: null,
-                filename: filterData.filename ? filterData.filename: null,
-                fromDate: filterData.fromDate ? AppUtil.getFormattedDate(filterData.fromDate,'', false) : null,
-                toDate: filterData.toDate ? AppUtil.getFormattedDate(filterData.toDate,'', false) : null,
+                preference: filterData.preference ? filterData.preference : null,
+                keywords: filterData.keywords ? filterData.keywords : null,
+                filename: filterData.filename ? filterData.filename : null,
+                fromDate: filterData.fromDate ? AppUtil.getFormattedDate(filterData.fromDate, '', false) : null,
+                toDate: filterData.toDate ? AppUtil.getFormattedDate(filterData.toDate, '', false) : null,
                 outputfrom: null,
                 outputto: null
             };
@@ -152,7 +190,6 @@ export class CAProcessingComponent implements OnInit {
     }
 
     getPreferences() {
-        this.loading = true;
         this.service.get(ApiConfig.getUserPreferencesOptionApi).subscribe(res => {
             if (res.result) {
                 let preferenceList: any[] = res.PreferenceList ? res.PreferenceList : [];
@@ -163,8 +200,9 @@ export class CAProcessingComponent implements OnInit {
                 });
                 this.preferenceOption = options;
             }
-            this.loading = false;
-        }, error => { this.loading = false; });
+        }, error => { 
+            console.log(error);
+        });
     }
 
     showSuccess(message: string) {

@@ -62,6 +62,23 @@ export class ApiConfig{
     public static getResourceApi: string = 'api/v1/auth/Resources/';
     public static manageResourceApi: string = 'api/v1/auth/ACLRoles/GetRoleACL/{roleId}/';
     
+    // api for new design
+    public static masterSanityApi: string = 'api/v1/cajust/CARequestTempViewSet/mastersanityList/';
+    public static caRequestDataApi: string = 'api/v1/cajust/CARequestTempViewSet/InsertTempData/';
+    public static caRequestUpdateSanityApi: string = 'api/v1/cajust/CARequestTempViewSet/UpdateSanityUI/';
+    public static sanitySummaryApi: string = 'api/v1/cajust/CARequestTempViewSet/GetSanitySummary/{commonId}/';
+    public static downloadSanityApi: string = 'api/v1/cajust/CARequestTempViewSet/downloadSanityFile/{commonId}/';
+    public static caUnProcessingApi: string = 'api/v1/cajust/CARequestTempViewSet/GetTempList/';
+    public static caUnProcessedDetailsApi: string = 'api/v1/cajust/CARequestTempViewSet/TempCaDetail/{commonId}';
+    public static caRequestUpdateDataApi: string = 'api/v1/cajust/CARequestTempViewSet/TempCaDetail/{commonId}/';
+    public static sanityListApi: string = 'api/v1/cajust/CARequestTempViewSet/AllSanityRow/';
+    public static updateSanityRecApi: string = 'api/v1/cajust/CARequestTempViewSet/updateCaTempRequest/';
+    public static level2SanityApi: string = 'api/v1/cajust/CARequestTempViewSet/UpdateServerSanity/{commonId}/';
+    public static requestPreviewApi: string = 'api/v1/cajust/CARequestTempViewSet/GetTempCAList/{commonId}/';
+    public static downloadCaRequestApi: string = 'api/v1/cajust/CARequestTempViewSet/DownloadAllSanityChecked/{commonId}/';
+    public static CreateCaRequestApi: string = 'api/v1/cajust/CARequestInputDetails/AddCaRequest2/{commonId}/';
+    public static processOutputApi: string = 'api/v1/cajust/CARequestInputDetails/GetOutputList/{requestId}/';
+
     // template download
     public static templatePath: string = 'src/assets/template/';
 }

@@ -1,0 +1,982 @@
+<div class="container marginT10">
+
+    <section class="Main padding0">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">Add CA Request</h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="javascript:void(0)" (click)="backToInput()">Input Settings</a>
+                        </li>
+                        <li class="active">Sanity Check Results (Error Detected)</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+
+                <div class="full_box2" *ngIf="sanitySummary">
+
+                    <h2 class="main_head">Sanity Check Summary (Total Records: {{sanitySummary.totalRecord}})</h2>
+                    <div class="catool_widget fnone padding20 paddingL0 box-height-auto minHeight50">
+
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+
+                            <div id="userprofile_select">
+                                <div class="col-md-4 col-sm-4 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <label for="selectbox" [ngClass]="{'active_level': sanitySummary.sanityLevel == 1}">1st Level Sanities: File & Data Format</label>
+                                        <div class="marginT15">
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel > 1">
+                                                <i class="fa fa-check-circle success-color" aria-hidden="true"></i> Success (no errors)
+                                            </p>
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel == 1">
+                                                <i class="fa fa-exclamation-triangle error-color" aria-hidden="true"></i> {{sanitySummary.sanityError}}
+                                            </p>
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel < 1">
+                                                <i class="fa fa-minus-circle light-grey-color" aria-hidden="true"></i> Not run due to errors in previous level
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <label for="selectbox" [ngClass]="{'active_level': sanitySummary.sanityLevel == 2}">2nd Level Sanities: Mandatory Data and DataValidation</label>
+                                        <div class="marginT15">
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel > 2">
+                                                <i class="fa fa-check-circle success-color" aria-hidden="true"></i> Success (no errors)
+                                            </p>
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel == 2 && sanitySummary.hardsanity > 0">
+                                                <i class="fa fa-exclamation-triangle error-color" aria-hidden="true"></i> {{sanitySummary.sanityError}}
+                                            </p>
+                                            <p class="result_text paddingT5" *ngIf="(sanitySummary.sanityLevel > 2 || sanitySummary.sanityLevel == 2) && sanitySummary.softsanity > 0">
+                                                <i class="fa fa-exclamation-triangle warning-color" aria-hidden="true"></i> {{sanitySummary.softsanity}} warning(s) detected.
+                                            </p>
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel < 2">
+                                                <i class="fa fa-minus-circle light-grey-color" aria-hidden="true"></i> Not run due to errors in previous level
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <label for="selectbox" [ngClass]="{'active_level': sanitySummary.sanityLevel == 3}">3rd Level Sanities: Duplication or Conflicting CAs</label>
+                                        <div class="marginT15">
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel == 3 && sanitySummary.totalRecord == 0">
+                                                <i class="fa fa-check-circle success-color" aria-hidden="true"></i> Success (no errors)
+                                            </p>
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel == 3 && sanitySummary.totalRecord > 0">
+                                                <i class="fa fa-exclamation-triangle error-color" aria-hidden="true"></i> {{sanitySummary.sanityError}}
+                                            </p>
+                                            <p class="result_text" *ngIf="sanitySummary.sanityLevel < 3">
+                                                <i class="fa fa-minus-circle light-grey-color" aria-hidden="true"></i> Not run due to errors in previous level
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 marginT15 marginB10">
+                            <div class="col-md-6 col-sm-12 col-xs-12 ">
+                                <button type="button" *ngIf="sanitySummary.hardsanity > 0 || updatedSoftSanityCount > 0" (click)="onSanity()" class="btn btn-primary CA_Tool_Btn float-right">Run Sanity Check</button>
+                                <button type="button" *ngIf="sanitySummary.hardsanity == 0 && updatedSoftSanityCount == 0" (click)="onSubmit()" class="btn btn-primary CA_Tool_Btn float-right">Submit Request For Processing</button>
+                            </div>
+
+                            <div class="col-md-6 col-sm-12 col-xs-12 ">
+                                <a href="javascript:void(0)" (click)="downloadSanity()" *ngIf="sanitySummary.hardsanity > 0">
+                                    <i class="fa fa-cloud-download padding10" pTooltip="Download" tooltipPosition="bottom" data-original-title="Download"></i>Input File with Full Sanity Faliure Detail(s)</a>
+                                <a href="javascript:void(0)" (click)="downloadRequest()" *ngIf="sanitySummary.hardsanity == 0">
+                                    <i class="fa fa-cloud-download padding10" pTooltip="Download" tooltipPosition="bottom" data-original-title="Download"></i>Post-Check Input File</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div *ngIf="sanitySummary && sanitySummary.hardsanity > 0" class="full_box2 marginT15">
+
+                    <h2 class="main_head" *ngIf="sanitySummary.sanityLevel == 1">1st Level Sanities: File & Data Format - Edit Sanity Error(s)</h2>
+                    <h2 class="main_head" *ngIf="sanitySummary.sanityLevel == 2">2nd Level Sanities: Mandatory Data and DataValidation - Edit Sanity Error(s)</h2>
+                    <h2 class="main_head" *ngIf="sanitySummary.sanityLevel == 3">3rd Level Sanities: Duplication or Conflicting CAs - Edit Sanity Error(s)</h2>
+                    <div class="catool_widget fnone padding20 paddingL0 box-height-auto minHeight50">
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+
+                            <div id="userprofile_select">
+                                <div class="col-md-12 col-sm-12 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <div class="col-md-8 col-sm-12 col-xs-12">
+                                            <label for="selectbox">Filter Records by Sanity Groups</label>
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 col-xs-12">
+                                            <!-- <a href="javascript:void(0)" class="sanity_faliure_input float-right">
+                                                <i class="fa fa-cloud-download padding10" data-toggle="tooltip" data-placement="left"
+                                                    title="" data-original-title="Download"></i>Input File with Full Sanity Faliure Detail(s)</a> -->
+                                        </div>
+                                        <div class="marginT15 box-height-auto" style="width: 100%;">
+                                            <!--checkboxes-->
+                                            <table *ngIf="sanityFilter.length > 0" class="table text-nowrap table-striped marginL10">
+                                                <tbody>
+                                                    <tr class="tax_custom noBG">
+                                                        <td *ngFor="let item of sanityFilter; let i = index">
+                                                            <label *ngIf="!item.sanityStatus" class="control control--checkbox">
+                                                                {{item.sanitygrouplabel}} <a href="javascript:void(0);" style="margin-left: 5px;" [pTooltip]="item.sanityDescription" tooltipPosition="bottom"><i class="fa fa-question-circle-o fa-lg text-primary"></i></a>
+                                                                <input type="checkbox" name="{{item.sanityGroup}}" checked="checked" (change)="onChange(item, $event.target.checked)">
+                                                                <div class="control__indicator"></div>
+                                                            </label>
+                                                            <p class="result_text marginB15" *ngIf="item.sanityStatus" style="font-weight: normal; font-size: 12px;">
+                                                                <i class="fa fa-check-circle success-color" aria-hidden="true"></i> {{item.sanitygrouplabel}} <a href="javascript:void(0);" style="margin-left: 5px;" [pTooltip]="item.sanityDescription" tooltipPosition="bottom"><i class="fa fa-question-circle-o fa-lg text-primary"></i></a>
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <!--checkboxes-->
+                                            <!--table-->
+                                            <div class="padding_left_right">
+                                                <div id="ca_tool_requests_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                    <div class="row">
+                                                        <div class="col-sm-6"></div>
+                                                        <div class="col-sm-6"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div *ngIf="sanityList.length > 0" class="col-sm-12">
+                                                            <p-table id="tblSanityList" #tblSanityList [paginator]="false" [rows]="5" [scrollable]="true" scrollHeight="300px"
+                                                                [rowsPerPageOptions]="[5,10,20]" frozenWidth="120px"
+                                                                [value]="sanityList" [loading]="" dataKey="reqdetailID">
+
+                                                                <ng-template pTemplate="frozenheader">
+                                                                    <tr class="height47">
+                                                                        <th class="width110">Action</th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="frozenbody" let-record let-indx="rowIndex" let-expanded="expanded">
+                                                                    <tr class="height47">
+                                                                        <td class="width120">
+                                                                            <a *ngIf="record['sanityname']=='duplicate'" href="#" [pRowToggler]="record">
+                                                                                <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down fa-lg text-primary' : 'fa fa-fw fa-chevron-circle-right fa-lg text-primary'"></i>
+                                                                            </a>
+                                                                            <a *ngIf="!record['edit'] && record['sanityname']!='duplicate'" href="javascript:void(0)" (click)="onRowEditInit(record, indx)" pTooltip="Edit" tooltipPosition="bottom">
+                                                                                <i class="fa fa-pencil-square fa-lg text-primary" style="margin-right: 5px; margin-left: 5px;"></i>
+                                                                            </a>
+                                                                            <a *ngIf="record['edit'] && record['sanityname']!='duplicate'" href="javascript:void(0)" (click)="onRowEditSave(record, indx)" pTooltip="Save" tooltipPosition="bottom">
+                                                                                <i class="fa fa-check-square fa-lg text-success" style="margin-right: 5px;"></i>
+                                                                            </a>
+                                                                            <a *ngIf="record['edit'] && record['sanityname']!='duplicate'" href="javascript:void(0)" (click)="onRowEditCancel(record, indx)" pTooltip="Cancel" tooltipPosition="bottom">
+                                                                                <i class="fa fa-times-rectangle fa-lg text-danger" style="margin-right: 5px;"></i>
+                                                                            </a>
+                                                                            <!-- <a *ngIf="record['sanityname']=='duplicate'" href="javascript:void(0)" (click)="onRowDelete(record, indx)" pTooltip="Delete" tooltipPosition="bottom">
+                                                                                <i class="fa fa-trash-o fa-lg" style="margin-right: 5px;"></i>
+                                                                            </a> -->
+                                                                            <a *ngIf="record['sanityError']" href="javascript:void(0)" [pTooltip]="record['sanityError']" [escape]="false" tooltipPosition="bottom">
+                                                                                <i class="fa fa-exclamation-triangle fa-lg error-color" style="margin-right: 5px;"></i> 
+                                                                            </a>
+                                                                            <a *ngIf="record['softsanity'] == 1" href="javascript:void(0)" [pTooltip]="record['sanityWarning']" [escape]="false" tooltipPosition="bottom">
+                                                                                <i class="fa fa-exclamation-triangle fa-lg warning-color"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-template>
+
+                                                                <ng-template pTemplate="header">
+                                                                    <tr class="height47">
+                                                                        <!-- <th class="width50"></th> -->
+                                                                        <th class="width150">Source</th>
+                                                                        <th class="width150">ISIN</th>
+                                                                        <th class="width150">Country</th>
+                                                                        <th class="width150">Identifier</th>
+                                                                        <th class="width150">Price Currency</th>
+                                                                        <th class="width150">ExDate</th>
+                                                                        <th class="width150">Event Type</th>
+                                                                        <th class="width150">Event Name</th>
+                                                                        <th class="width150">Event Currency</th>
+                                                                        <th class="width150">Event Amount</th>
+                                                                        <th class="width150">Offer Price</th>
+                                                                        <th class="width150">Term Old Shares</th>
+                                                                        <th class="width150">Term New Shares</th>
+                                                                        <th class="width150">Spun - Off Stock</th>
+                                                                        <th class="width150">Spun - Off Cash</th>
+                                                                        <th class="width150">Price(ExDate-1)</th>
+                                                                        <th class="width150">FX(ExDate-1)</th>
+                                                                        <th class="width150">Pay Date</th>
+                                                                        <th class="width150">Pay Date Price-T1</th>
+                                                                        <th class="width150">Pay Date Fx-T1</th>
+                                                                        <th class="width150">Franking Percent</th>
+                                                                        <th class="width150">Income Percent</th>
+                                                                        <th class="width150">REIT</th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+                                                                    <tr class="height47">
+                                                                        <!-- <td class="width50">{{ i+1 }}</td> -->
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.source" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                               <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.source}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.isin" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.isin}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <!-- <input type="text" pInputText [(ngModel)]="rowData.country" class="form-control"> -->
+                                                                                <!-- <p-dropdown id="searchDDL" [(ngModel)]="rowData.country" [options]="countryOption" [filter]="true" filterBy="label"
+                                                                                    [style]="{'width':'98%', 'height':'34px', 'border-bottom-color':'#d8d8d8'}">
+                                                                                </p-dropdown> -->
+                                                                                <select [(ngModel)]="rowData.country" class="form-control ">
+                                                                                    <option value="">Select</option>
+                                                                                    <option *ngFor="let ctry of countryOption" [value]="ctry.value">{{ctry.label}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.country}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.identifier" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.identifier}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.priceCurrency" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.priceCurrency}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.exdate" placeholder="MM/DD/YYYY" class="form-control">
+                                                                                <!-- <my-date-picker [(ngModel)]="rowData.exdate" [options]="myDateFormat" class="" [style]="{'width':'100%'}">
+                                                                                </my-date-picker> -->
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.exdate}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.eventType" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.eventType}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.eventName" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.eventName}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.eventCurrency" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.eventCurrency}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.eventamount" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.eventamount}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.offerprice" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.offerprice}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.termoldshares" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.termoldshares}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.termnewshares" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.termnewshares}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.spunoffstock" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.spunoffstock}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.spunoffcash" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.spunoffcash}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.priceExT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.priceExT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.fxexT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.fxexT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.paydate" placeholder="MM/DD/YYYY" class="form-control">
+                                                                                <!-- <my-date-picker [(ngModel)]="rowData.paydate" [options]="myDateFormat" class="" [style]="{'width':'100%'}">
+                                                                                </my-date-picker> -->
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.paydate}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.payDatePriceT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.payDatePriceT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.payDateFxT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.payDateFxT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.frankingPercent" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.frankingPercent}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.incomePercent" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.incomePercent}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <!-- <input type="text" pInputText [(ngModel)]="rowData.reit" class="form-control"> -->
+                                                                                <select [(ngModel)]="rowData.reit" class="form-control ">
+                                                                                    <option value="">Select</option>
+                                                                                    <option *ngFor="let reit of reitOption" [value]="reit.value">{{reit.label}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowData.reit}}</span>
+                                                                            </div>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+
+                                                                    <p-table id="tblDuplicateSanityList" #tblDuplicateSanityList [paginator]="false" [rows]="5" [scrollable]="false" [rowsPerPageOptions]="[5,10,20]"
+                                                                        [value]="rowData.childRecords" dataKey="reqdetailID">
+                                                                        <ng-template pTemplate="body" let-rowSubData let-i="rowIndex">
+                                                                            <tr class="height47">
+                                                                                <td class="width120">
+                                                                                    <div class="paddingLeft20">
+                                                                                        <a *ngIf="!rowSubData['edit']" href="javascript:void(0)" (click)="onRowEditInit(rowSubData, i)" pTooltip="Edit" tooltipPosition="bottom">
+                                                                                            <i class="fa fa-pencil-square fa-lg text-primary" style="margin-right: 5px;"></i>
+                                                                                        </a>
+                                                                                        <a *ngIf="rowSubData['edit']" href="javascript:void(0)" (click)="onRowEditSave(rowSubData, rowIndex, true, i)" pTooltip="Save"
+                                                                                            tooltipPosition="bottom">
+                                                                                            <i class="fa fa-check-square fa-lg text-success" style="margin-right: 5px;"></i>
+                                                                                        </a>
+                                                                                        <a *ngIf="rowSubData['edit']" href="javascript:void(0)" (click)="onRowEditCancel(rowSubData, i)" pTooltip="Cancel" tooltipPosition="bottom">
+                                                                                            <i class="fa fa-times-rectangle fa-lg text-danger" style="margin-right: 5px;"></i>
+                                                                                        </a>
+                                                                                        <a href="javascript:void(0)" (click)="onRowDelete(rowSubData, rowIndex, true, i)" pTooltip="Delete" tooltipPosition="bottom">
+                                                                                            <i class="fa fa-trash-o fa-lg" style="margin-right: 5px;"></i>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.source" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.source}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.isin" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.isin}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <select [(ngModel)]="rowSubData.country" class="form-control">
+                                                                                            <option value="">Select</option>
+                                                                                            <option *ngFor="let ctry of countryOption" [value]="ctry.value">{{ctry.label}}</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.country}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.identifier" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.identifier}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.priceCurrency" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.priceCurrency}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.exdate" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.exdate}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.eventType" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.eventType}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.eventName" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.eventName}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.eventCurrency" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.eventCurrency}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.eventamount" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.eventamount}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.offerprice" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.offerprice}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.termoldshares" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.termoldshares}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.termnewshares" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.termnewshares}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.spunoffstock" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.spunoffstock}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.spunoffcash" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.spunoffcash}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.priceExT1" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.priceExT1}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.fxexT1" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.fxexT1}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText [(ngModel)]="rowSubData.paydate" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.paydate}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.payDatePriceT1" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.payDatePriceT1}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.payDateFxT1" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.payDateFxT1}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.frankingPercent" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.frankingPercent}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowSubData.incomePercent" class="form-control">
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.incomePercent}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="width150">
+                                                                                    <div *ngIf="rowSubData['edit']">
+                                                                                        <!-- <input type="text" pInputText [(ngModel)]="rowData.reit" class="form-control"> -->
+                                                                                        <select [(ngModel)]="rowSubData.reit" class="form-control ">
+                                                                                            <option value="">Select</option>
+                                                                                            <option *ngFor="let reit of reitOption" [value]="reit.value">{{reit.label}}</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div *ngIf="!rowSubData['edit']">
+                                                                                        <span [pTooltip]="rowSubData.sanityError" [escape]="false" tooltipPosition="bottom">{{rowSubData.reit}}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ng-template>
+                                                                    </p-table>
+
+                                                                </ng-template>
+                                                            </p-table>
+                                                        </div>
+                                                        <div *ngIf="sanityList.length == 0" class="col-sm-12">
+                                                            <p class="no-record">No records found</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-5"></div>
+                                                        <div class="col-sm-7"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--table-->
+
+                                            <div class="marginT20 text-center">
+                                                <button type="button" *ngIf="sanitySummary.hardsanity > 0 && sanityList.length > 0" (click)="onSanity()" class="btn btn-primary CA_Tool_Btn">Run Sanity Check</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="sanitySummary && sanitySummary.hardsanity == 0 && previewList.length > 0" class="full_box2 marginT15">
+                
+                    <h2 class="main_head">View All Sanity Checked Rows</h2>
+                    <div class="catool_widget fnone padding20 paddingL0 box-height-auto minHeight50">
+                        <div class="col-md-12 col-sm-12 col-xs-12 padding0 ">
+                
+                            <div id="userprofile_select">
+                                <div class="col-md-12 col-sm-12 col-xs-12  user_finder_select ">
+                                    <div class="form-group">
+                                        <div class="marginT15 box-height-auto" style="width: 100%;">
+                
+                                            <div class="padding_left_right">
+                                                <div id="ca_tool_requests_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                    <div class="row">
+                                                        <div class="col-sm-6"></div>
+                                                        <div class="col-sm-6"></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <p-table id="tblRequestList" #tblRequestList [paginator]="false" [rows]="5" [first]="0" [scrollable]="true" scrollHeight="300px"
+                                                                [rowsPerPageOptions]="[5,10,20]" frozenWidth="100px" [value]="previewList" [loading]="" dataKey="reqdetailID">
+                                                    
+                                                                <ng-template pTemplate="frozenheader">
+                                                                    <tr class="height47">
+                                                                        <th class="width100">Action</th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="frozenbody" let-record let-indx="rowIndex">
+                                                                    <tr class="height47">
+                                                                        <td class="width100">
+                                                                            <a *ngIf="record['softsanity'] == 1 && !record['edit']" href="javascript:void(0)" (click)="onPreviewRowEditInit(record, indx)" pTooltip="Edit" tooltipPosition="bottom">
+                                                                                <i class="fa fa-pencil-square fa-lg text-primary" style="margin-right: 5px;"></i>
+                                                                            </a>
+                                                                            <a *ngIf="record['softsanity'] == 1 && record['edit']" href="javascript:void(0)" (click)="onPreviewRowEditSave(record, indx)" pTooltip="Save" tooltipPosition="bottom">
+                                                                                <i class="fa fa-check-square fa-lg text-success" style="margin-right: 5px;"></i>
+                                                                            </a>
+                                                                            <a *ngIf="record['softsanity'] == 1 && record['edit']" href="javascript:void(0)" (click)="onPreviewRowEditCancel(record, indx)" pTooltip="Cancel" tooltipPosition="bottom">
+                                                                                <i class="fa fa-times-rectangle fa-lg text-danger" style="margin-right: 5px;"></i>
+                                                                            </a>
+                                                                            <a *ngIf="record['softsanity'] == 1" href="javascript:void(0)" [pTooltip]="record['warning']" [escape]="false" tooltipPosition="bottom">
+                                                                                <i class="fa fa-exclamation-triangle fa-lg warning-color" aria-hidden="true"></i>
+                                                                            </a>
+                                                                            <a *ngIf="record['softsanity'] == 0" href="javascript:void(0)" pTooltip="Success (no errors)" [escape]="false" tooltipPosition="bottom">
+                                                                                <i class="fa fa-check-circle fa-lg success-color" aria-hidden="true"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                    
+                                                                <ng-template pTemplate="header">
+                                                                    <tr class="height47">
+                                                                        <!-- <th class="width50"></th> -->
+                                                                        <th class="width150">Source</th>
+                                                                        <th class="width150">ISIN</th>
+                                                                        <th class="width150">Country</th>
+                                                                        <th class="width150">Identifier</th>
+                                                                        <th class="width150">Price Currency</th>
+                                                                        <th class="width150">ExDate</th>
+                                                                        <th class="width150">Event Type</th>
+                                                                        <th class="width150">Event Name</th>
+                                                                        <th class="width150">Event Currency</th>
+                                                                        <th class="width150">Event Amount</th>
+                                                                        <th class="width150">Offer Price</th>
+                                                                        <th class="width150">Term Old Shares</th>
+                                                                        <th class="width150">Term New Shares</th>
+                                                                        <th class="width150">Spun - Off Stock</th>
+                                                                        <th class="width150">Spun - Off Cash</th>
+                                                                        <th class="width150">Price(ExDate-1)</th>
+                                                                        <th class="width150">FX(ExDate-1)</th>
+                                                                        <th class="width150">Pay Date</th>
+                                                                        <th class="width150">Pay Date Price-T1</th>
+                                                                        <th class="width150">Pay Date Fx-T1</th>
+                                                                        <th class="width150">Franking Percent</th>
+                                                                        <th class="width150">Income Percent</th>
+                                                                        <th class="width150">REIT</th>
+                                                                    </tr>
+                                                                </ng-template>
+                                                                <ng-template pTemplate="body" let-rowData let-i="rowIndex">
+                                                                    <tr class="height47">
+                                                                        <!-- <td class="width50">{{ i+1 }}</td> -->
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.source" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.source}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.isin" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.isin}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <!-- <input type="text" pInputText [(ngModel)]="rowData.country" class="form-control"> -->
+                                                                                <!-- <p-dropdown id="searchDDL" [(ngModel)]="rowData.country" [options]="countryOption" [filter]="true" filterBy="label"
+                                                                                                                                                                                            [style]="{'width':'98%', 'height':'34px', 'border-bottom-color':'#d8d8d8'}">
+                                                                                                                                                                                        </p-dropdown> -->
+                                                                                <select [(ngModel)]="rowData.country" class="form-control ">
+                                                                                    <option value="">Select</option>
+                                                                                    <option *ngFor="let ctry of countryOption" [value]="ctry.value">{{ctry.label}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.country}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.identifier" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.identifier}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.priceCurrency" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.priceCurrency}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.exdate" class="form-control">
+                                                                                <!-- <my-date-picker [(ngModel)]="rowData.exdate" [options]="myDateFormat" class="" [style]="{'width':'100%'}">
+                                                                                                                                                                                        </my-date-picker> -->
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.exdate}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.eventType" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.eventType}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.eventName" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.eventName}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.eventCurrency" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.eventCurrency}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.eventamount" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.eventamount}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.offerprice" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.offerprice}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.termoldshares" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.termoldshares}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.termnewshares" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.termnewshares}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.spunoffstock" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.spunoffstock}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.spunoffcash" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.spunoffcash}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.priceExT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.priceExT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.fxexT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.fxexT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText [(ngModel)]="rowData.paydate" class="form-control">
+                                                                                <!-- <my-date-picker [(ngModel)]="rowData.paydate" [options]="myDateFormat" class="" [style]="{'width':'100%'}">
+                                                                                                                                                                                        </my-date-picker> -->
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.paydate}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.payDatePriceT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.payDatePriceT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.payDateFxT1" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.payDateFxT1}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.frankingPercent" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.frankingPercent}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <input type="text" pInputText pKeyFilter="num" [(ngModel)]="rowData.incomePercent" class="form-control">
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.incomePercent}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="width150">
+                                                                            <div *ngIf="rowData['edit']">
+                                                                                <!-- <input type="text" pInputText [(ngModel)]="rowData.reit" class="form-control"> -->
+                                                                                <select [(ngModel)]="rowData.reit" class="form-control ">
+                                                                                    <option value="">Select</option>
+                                                                                    <option *ngFor="let reit of reitOption" [value]="reit.value">{{reit.label}}</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div *ngIf="!rowData['edit']">
+                                                                                <span [pTooltip]="rowData.warning" [escape]="false" tooltipPosition="bottom">{{rowData.reit}}</span>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-template>
+                                                            </p-table>
+                                                        </div>
+                                                        <div *ngIf="previewList.length == 0" class="col-sm-12">
+                                                            <p class="no-record">No records found</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-5"></div>
+                                                        <div class="col-sm-7"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--table-->
+                
+                                        </div>
+                                    </div>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+</div>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="400">
+</p-confirmDialog>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<my-spinner [loading]="loading"></my-spinner>

@@ -1,0 +1,39 @@
+<section class="container_fluid  padding0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12 ">
+                <h1 class="size18">View Process Output </h1>
+                <div class="col-md-12 padding0 ">
+                    <ol class="breadcrumb">
+                        <li>
+                            <a routerLink="/dashboard">Home</a>
+                        </li>
+                        <li class="active">View Process Output </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <div class="catool_widget viewReq" id="form_section">
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+                        <my-datatable id="tblCAProcessingOutput" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows"
+                            [tableName]="tableName" (valueChange)='downloadOutput($event)'>
+                        </my-datatable>
+                    </div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
+                        <button type="button" (click)="onBack()" class="btn btn-primary CA_Tool_Btn float-left">Back To Request Listing</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="gap20"></div>
+<div class="gap20"></div>
+<a id="back-to-top" href="javascript:void(0)" class="btn btn-primary btn-lg back-to-top btnTop  hidden-xs" role="button"
+    title="Go to top" data-toggle="tooltip" data-placement="left">
+    <span class="glyphicon glyphicon-menu-up"></span>
+</a>
+<p-growl [life]="growlLife" [(value)]="msgs"></p-growl>
+<my-spinner [loading]="loading"></my-spinner>

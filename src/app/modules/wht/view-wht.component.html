@@ -84,7 +84,7 @@
                                                 <option *ngFor="let coun of searchCountryOption" [value]="coun.value">{{coun.label}}</option>
                                             </select> -->
                                             <p-dropdown id="searchDDL" formControlName="country" [options]="searchCountryOption" [filter]="true" filterBy="label"
-                                                (onChange)="onChangeCountry($event.value)" [style]="{'width':'100%', 'height':'36px', 'border-bottom-color':'#d8d8d8'}"
+                                                (onChange)="onChangeCountry($event.value)" [style]="{'width':'100%', 'height':'38px', 'border-bottom-color':'#d8d8d8'}"
                                                 styleClass="marginT0">
                                             </p-dropdown>
                                         </div>
@@ -95,12 +95,12 @@
                                                 <option value="">Select</option>
                                                 <option *ngFor="let schName of searchScheduleNameOption" [value]="schName.value">{{schName.label}}</option>
                                             </select> -->
-                                            <p-dropdown id="searchDDL" formControlName="txtScheduleName" [options]="searchScheduleNameOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'36px', 'border-bottom-color':'#d8d8d8'}"
+                                            <p-dropdown id="searchDDL" formControlName="txtScheduleName" [options]="searchScheduleNameOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'38px', 'border-bottom-color':'#d8d8d8'}"
                                                 styleClass="marginT0">
                                             </p-dropdown>
                                         </div>
 
-                                        <div class="col-md-1 col-sm-3 col-xs-12 marginT25 paddingL10">
+                                        <div class="col-md-1 col-sm-3 col-xs-12 marginT20 paddingL10">
                                             <!-- <a href="javscript:void(0)" id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left"> Search</a> -->
                                             <button id="btnSearch" class="pull-right btn CA_Tool_Btn pull-left" type="submit" [disabled]="searchForm.invalid">Apply Filter</button>
                                         </div>
@@ -154,7 +154,7 @@
                                                 <option value="">Select</option>
                                                 <option *ngFor="let ctry of countryOption" [value]="ctry.value">{{ctry.label}}</option>
                                             </select> -->
-                                            <p-dropdown id="searchDDL2" [(ngModel)]="row.countryid" [options]="countryOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'40px', 'border-bottom-color':'#d8d8d8'}"
+                                            <p-dropdown id="searchDDL" [(ngModel)]="row.countryid" [options]="countryOption" [filter]="true" filterBy="label" [style]="{'width':'100%', 'height':'40px', 'border-bottom-color':'#d8d8d8'}"
                                                 styleClass="marginT0">
                                             </p-dropdown>
                                         </div>

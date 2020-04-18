@@ -15,11 +15,20 @@
         </div>
         <div class="row">
             <div class="col-md-12 col-xs-12 col-sm-12">
-                <div class="catool_widget " id="form_section">
+                <div class="catool_widget viewReq" id="form_section">
                     <div class="col-md-12 col-sm-12 col-xs-12 marginT20">
-                        <my-datatable id="tblCAProcessing" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows"
-                            [tableName]="tableName" [preferenceOption]="preferenceOption" (valueChange)='onAction($event)'>
-                        </my-datatable>
+                        <p-tabView (onChange)="onTabChange($event)">
+                            <p-tabPanel header="Processed CA Request">
+                                <my-datatable id="tblCAProcessing" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows"
+                                    [tableName]="tableName" [preferenceOption]="preferenceOption" (valueChange)='onAction($event)'>
+                                </my-datatable>
+                            </p-tabPanel>
+                            <p-tabPanel header="WIP CA Request">
+                                <my-datatable id="tblCAUnProcessing" [table]="tableConfig.table" [columns]="tableConfig.columns" [rows]="tableConfig.rows"
+                                    [tableName]="tableName" (valueChange)='onAction($event)'>
+                                </my-datatable>
+                            </p-tabPanel>
+                        </p-tabView>
                     </div>
                 </div>
             </div>

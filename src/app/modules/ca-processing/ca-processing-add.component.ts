@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation, AfterViewInit } from '@angular/co
 import { FormGroup, FormControl, FormBuilder, Validators, NgForm, FormArray, AbstractControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { formatDate, DatePipe } from '@angular/common';
+import { from } from 'rxjs';
+import { groupBy, mergeMap, toArray } from 'rxjs/operators';
 
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { OverlayPanel } from 'primeng/primeng';
@@ -11,7 +13,7 @@ import { ApiConfig } from '../../core/config/api-config';
 import { AppSession } from '../../core/config/app-session';
 import { GlobalConst, DocType, EventType, Template, Action } from '../../core/config/app-enum';
 import { AppUtil } from '../../core/config/app-util';
-import { ISanityModel, IMasterData, IRequest, IRequestPost, ICountryTaxRate } from '../../core/models/ca-processing.model';
+import { ISanityModel, IMasterData, IRequest, IRequestPost, ICountryTaxRate, IMasterSanity } from '../../core/models/ca-processing-add.model';
 
 @Component({
     selector: 'app-ca-processing-add',
@@ -65,6 +67,10 @@ export class CAProcessingAddComponent implements OnInit, AfterViewInit {
     countryOption: any[] = [];
     countryTaxRateList: ICountryTaxRate[] = [];
     
+    sanityList: IMasterSanity[] = [];
+    sanityGroupList: IMasterSanity[] = [];
+    activeSanityList: IMasterSanity[] = []
+
     constructor(private fb:FormBuilder, private router: Router, private route: ActivatedRoute, private service: HttpService, public datepipe: DatePipe) {
         this.userInfo = AppSession.getSessionStorage("UserInfo");
     }
@@ -77,6 +83,7 @@ export class CAProcessingAddComponent implements OnInit, AfterViewInit {
         this.getIndexType();
         this.getSaveAs();
         this.getCountryOption();
+        this.getSanityList();
         
         this.route.params.subscribe(params => {
             this.requestID = params['id'] || null;
@@ -99,7 +106,8 @@ export class CAProcessingAddComponent implements OnInit, AfterViewInit {
             emailAlerts:[false],
             email:[''],
             saveAs: this.createFormGroup(this.saveAsOption),
-            comment:[{value: '', disabled: this.disabled}]
+            comment:[{value: '', disabled: this.disabled}],
+            masterSanity:this.createSanityFormGroup(this.sanityList)
         });
 
         this.formControlValueChanged();
@@ -195,6 +203,15 @@ export class CAProcessingAddComponent implements OnInit, AfterViewInit {
         for (let item of items) {
             let control: FormControl = new FormControl(item.value);
             formGroup.addControl(item.name, control);
+        }
+        return formGroup;
+    }
+
+    createSanityFormGroup(items: any[]): FormGroup {
+        let formGroup: FormGroup = new FormGroup({});
+        for (let item of items) {
+            let control: FormControl = new FormControl(item.value);
+            formGroup.addControl(item.id, control);
         }
         return formGroup;
     }
@@ -841,6 +858,8 @@ export class CAProcessingAddComponent implements OnInit, AfterViewInit {
     }
 
     onSubmit(): void{
+        //let dd: any = this.caProcessingAddForm.controls['masterSanity'].value;
+        console.log(this.activeSanityList);
         if(this.caProcessingAddForm.valid){
             // master data
             let masterData: IMasterData = {
@@ -1060,6 +1079,75 @@ export class CAProcessingAddComponent implements OnInit, AfterViewInit {
     showError(message: string) {
         this.msgs = [];
         this.msgs.push({ severity: 'error', detail: message });
+    }
+
+    getSanityList(): void {
+        this.sanityList = [{
+            "id": 1,
+            "name": "Pay Date",
+            "value": true,
+            "level": 1,
+            "group": "DataValidation",
+            "description": null,
+            "softsanity": 0
+        },
+        {
+            "id": 2,
+            "name": "Event Amount",
+            "value": false,
+            "level": 1,
+            "group": "DataValidation",
+            "description": null,
+            "softsanity": 0
+        },
+        {
+            "id": 3,
+            "name": "Pay Date",
+            "value": false,
+            "level": 1,
+            "group": "MandatoryData",
+            "description": null,
+            "softsanity": 0
+        },
+        {
+            "id": 4,
+            "name": "Event Amount",
+            "value": true,
+            "level": 1,
+            "group": "MandatoryData",
+            "description": null,
+            "softsanity": 0
+        }];
+
+        this.activeSanityList = this.sanityList.filter(x=>x.value == true);
+
+        if (this.sanityList.length > 0) {
+            this.sanityGroupList = [];
+            let source = from(this.sanityList);
+            let groupArray = source.pipe(
+                groupBy(x => x.group),
+                mergeMap(group => group.pipe(toArray()))
+            );
+            groupArray.subscribe(item => {
+                if (item.length > 0) {
+                    let sanity: IMasterSanity = {};
+                    sanity = item[0];
+                    sanity.child = item;
+                    this.sanityGroupList.push(sanity);
+                }
+            });
+        }
+    }
+
+    onChange(item: any, isChecked: boolean) {
+        if (isChecked) {
+            this.activeSanityList.push(item);
+        } else {
+            let index = this.activeSanityList.findIndex(x => x.id == item.id);
+            if (index > -1) {
+                this.activeSanityList.splice(index, 1);
+            }
+        }
     }
 
 }

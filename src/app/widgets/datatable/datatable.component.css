@@ -21,6 +21,7 @@
     font-weight: unset;
     height: 45px;
     background: #fff;
+    padding: 0
 }
 #myTable .ui-table .ui-widget-header #buttons a {
     color: #ffffff;
@@ -31,13 +32,17 @@
 #tblPreference label, 
 #tblCAProcessing label,
 #tblCAProcessingDashboard label,
+#tblCAUnProcessing label,
 #tblClients label,
 #tblAccounts label,
-#tblUsers label{ margin:0px; }
+#tblUsers label,
+#tblCAProcessingOutput label{ margin:0px; }
 
 #tblPreference .ui-dropdown .ui-dropdown-label,
 #tblCAProcessing .ui-dropdown .ui-dropdown-label,
-#tblCAProcessingDashboard .ui-dropdown .ui-dropdown-label { display: block;}
+#tblCAUnProcessing .ui-dropdown .ui-dropdown-label,
+#tblCAProcessingDashboard .ui-dropdown .ui-dropdown-label,
+#tblCAProcessingOutput .ui-dropdown .ui-dropdown-label { display: block;}
 
 #myTable #search input[type=text] {
     height: 30px;   
@@ -59,7 +64,6 @@
 #tblCAProcessing #filterSection label{ 
     font-weight: 700;
     float: left;
-    margin-top: 10px;
 }
 
 #tblPreference #myTable .ui-table .ui-table-caption,
@@ -67,7 +71,3 @@
     height: 140px;
 }
 
-#searchDDL label{
-    margin-top: 3px !important;
-    text-align: left;
-}
